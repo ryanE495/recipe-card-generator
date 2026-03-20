@@ -396,15 +396,15 @@ import Layout from '../layouts/Layout.astro';
 
 <!-- Card styles must be global because HTML is injected via JS -->
 <style is:global>
-  /* ===== SIZE SYSTEM ===== */
+  /* ===== SIZE SYSTEM (landscape orientation) ===== */
   .recipe-card {
     overflow: hidden;
     position: relative;
     transition: all 0.3s ease;
   }
-  .size-3x5 { width: 5in; min-height: 3in; }
-  .size-4x6 { width: 6in; min-height: 4in; }
-  .size-5x7 { width: 7in; min-height: 5in; }
+  .size-3x5 { width: 5in; height: 3in; overflow-y: auto; }
+  .size-4x6 { width: 6in; height: 4in; overflow-y: auto; }
+  .size-5x7 { width: 7in; height: 5in; overflow-y: auto; }
   .size-full { width: 100%; max-width: 800px; }
 
   /* ===== GRANDMA'S TEMPLATE ===== */
@@ -445,14 +445,14 @@ import Layout from '../layouts/Layout.astro';
     z-index: 0;
   }
   .template-grandma .card-header {
-    padding: 28px 40px 16px 72px;
+    padding: 20px 32px 10px 64px;
     position: relative;
     z-index: 1;
     border-bottom: none;
   }
   .template-grandma .card-header h2 {
     font-family: 'Caveat', cursive;
-    font-size: 2.4rem;
+    font-size: 2rem;
     font-weight: 700;
     color: #4A3728;
     line-height: 1.2;
@@ -464,8 +464,8 @@ import Layout from '../layouts/Layout.astro';
   }
   .template-grandma .card-meta {
     display: flex;
-    gap: 24px;
-    padding: 8px 40px 12px 72px;
+    gap: 16px;
+    padding: 4px 32px 8px 64px;
     position: relative;
     z-index: 1;
     flex-wrap: wrap;
@@ -479,13 +479,16 @@ import Layout from '../layouts/Layout.astro';
     margin-right: 2px;
   }
   .template-grandma .card-body {
-    padding: 12px 40px 36px 72px;
+    padding: 8px 32px 24px 64px;
     position: relative;
     z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 12px 24px;
   }
   .template-grandma .section-title {
     font-family: 'Caveat', cursive;
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     color: #4A3728;
     margin-bottom: 8px;
     font-weight: 700;
@@ -495,11 +498,11 @@ import Layout from '../layouts/Layout.astro';
   }
   .template-grandma .ingredients-list {
     list-style: none;
-    margin-bottom: 20px;
+    margin-bottom: 0;
   }
   .template-grandma .ingredients-list li {
-    padding: 2px 0;
-    font-size: 1.2rem;
+    padding: 1px 0;
+    font-size: 1.05rem;
     color: #4A3728;
     line-height: 1.5;
   }
@@ -512,8 +515,8 @@ import Layout from '../layouts/Layout.astro';
     counter-reset: step;
   }
   .template-grandma .instructions-list li {
-    padding: 3px 0;
-    font-size: 1.15rem;
+    padding: 2px 0;
+    font-size: 1rem;
     color: #4A3728;
     counter-increment: step;
     line-height: 1.5;
@@ -524,9 +527,10 @@ import Layout from '../layouts/Layout.astro';
     font-weight: 700;
   }
   .template-grandma .card-notes {
-    margin-top: 16px;
-    padding: 10px 14px;
-    font-size: 1.1rem;
+    grid-column: 1 / -1;
+    margin-top: 4px;
+    padding: 6px 10px;
+    font-size: 0.95rem;
     color: #8B7355;
     font-style: italic;
     border-top: 1px dashed rgba(180,160,100,0.4);
@@ -554,7 +558,7 @@ import Layout from '../layouts/Layout.astro';
     pointer-events: none;
   }
   .template-vintage .card-header {
-    padding: 40px 48px 20px;
+    padding: 28px 40px 12px;
     text-align: center;
     position: relative;
   }
@@ -600,16 +604,19 @@ import Layout from '../layouts/Layout.astro';
     font-size: 1rem;
   }
   .template-vintage .card-body {
-    padding: 24px 48px 44px;
+    padding: 16px 40px 32px;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 12px 24px;
   }
   .template-vintage .section-title {
     font-family: 'Playfair Display', serif;
-    font-size: 1.15rem;
+    font-size: 1rem;
     color: #3C2F1E;
     text-transform: uppercase;
     letter-spacing: 3px;
     font-weight: 600;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
     text-align: center;
     position: relative;
   }
@@ -623,9 +630,7 @@ import Layout from '../layouts/Layout.astro';
   }
   .template-vintage .ingredients-list {
     list-style: none;
-    columns: 2;
-    column-gap: 24px;
-    margin-bottom: 28px;
+    margin-bottom: 0;
   }
   .template-vintage .ingredients-list li {
     padding: 5px 0 5px 18px;
@@ -674,8 +679,9 @@ import Layout from '../layouts/Layout.astro';
     font-family: 'Playfair Display', serif;
   }
   .template-vintage .card-notes {
-    margin-top: 24px;
-    padding: 16px 20px;
+    grid-column: 1 / -1;
+    margin-top: 8px;
+    padding: 10px 16px;
     border: 1px solid #D8CAA8;
     border-radius: 4px;
     background: rgba(255,255,255,0.3);
@@ -704,7 +710,7 @@ import Layout from '../layouts/Layout.astro';
     pointer-events: none;
   }
   .template-farmhouse .card-header {
-    padding: 44px 48px 16px;
+    padding: 24px 40px 10px;
     text-align: center;
   }
   .template-farmhouse .card-header::after {
@@ -749,12 +755,17 @@ import Layout from '../layouts/Layout.astro';
     font-size: 1.3rem;
     color: #5C6B52;
   }
-  .template-farmhouse .card-body { padding: 24px 48px 48px; }
+  .template-farmhouse .card-body {
+    padding: 16px 40px 32px;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 12px 24px;
+  }
   .template-farmhouse .section-title {
     font-family: 'Caveat', cursive;
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     color: #5C6B52;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     text-align: center;
   }
   .template-farmhouse .section-title::after {
@@ -767,10 +778,8 @@ import Layout from '../layouts/Layout.astro';
   }
   .template-farmhouse .ingredients-list {
     list-style: none;
-    columns: 2;
-    column-gap: 28px;
-    margin-bottom: 32px;
-    padding: 20px 24px;
+    margin-bottom: 0;
+    padding: 14px 18px;
     background: rgba(255,255,255,0.4);
     border-radius: 12px;
     border: 1px dashed #B5C4A8;
@@ -820,8 +829,9 @@ import Layout from '../layouts/Layout.astro';
     color: #5C6B52;
   }
   .template-farmhouse .card-notes {
-    margin-top: 24px;
-    padding: 16px 20px;
+    grid-column: 1 / -1;
+    margin-top: 8px;
+    padding: 10px 16px;
     background: rgba(255,255,255,0.4);
     border: 1px solid #DDD2BE;
     border-radius: 10px;
@@ -854,7 +864,7 @@ import Layout from '../layouts/Layout.astro';
     pointer-events: none;
   }
   .template-heirloom .card-header {
-    padding: 48px 56px 20px;
+    padding: 28px 44px 12px;
     text-align: center;
     position: relative;
   }
@@ -890,8 +900,8 @@ import Layout from '../layouts/Layout.astro';
   .template-heirloom .card-meta {
     display: flex;
     justify-content: center;
-    gap: 32px;
-    padding: 16px 56px;
+    gap: 24px;
+    padding: 8px 44px;
     flex-wrap: wrap;
   }
   .template-heirloom .meta-item {
@@ -907,7 +917,7 @@ import Layout from '../layouts/Layout.astro';
     font-family: 'Playfair Display', serif;
   }
   .template-heirloom .card-body {
-    padding: 24px 56px 56px;
+    padding: 16px 44px 32px;
     display: grid;
     grid-template-columns: 1fr 1.4fr;
     gap: 32px;
@@ -1083,20 +1093,11 @@ import Layout from '../layouts/Layout.astro';
     const instructionsHtml = (r.instructions || []).map(i => `<li>${i}</li>`).join('');
     const notesHtml = r.notes ? `<div class="card-notes"><strong>Notes: </strong>${r.notes}</div>` : '';
 
-    let bodyContent;
-    if (currentTemplate === 'heirloom') {
-      bodyContent = `
-        <div><h3 class="section-title">Ingredients</h3><ul class="ingredients-list">${ingredientsHtml}</ul></div>
-        <div><h3 class="section-title">Instructions</h3><ol class="instructions-list">${instructionsHtml}</ol></div>
-        ${notesHtml}`;
-    } else {
-      bodyContent = `
-        <h3 class="section-title">Ingredients</h3>
-        <ul class="ingredients-list">${ingredientsHtml}</ul>
-        <h3 class="section-title">Instructions</h3>
-        <ol class="instructions-list">${instructionsHtml}</ol>
-        ${notesHtml}`;
-    }
+    // All templates use two-column layout for landscape note card feel
+    const bodyContent = `
+      <div><h3 class="section-title">Ingredients</h3><ul class="ingredients-list">${ingredientsHtml}</ul></div>
+      <div><h3 class="section-title">Instructions</h3><ol class="instructions-list">${instructionsHtml}</ol></div>
+      ${notesHtml}`;
 
     recipeCard.className = `recipe-card template-${currentTemplate} size-${currentSize} fade-up`;
     recipeCard.innerHTML = `
