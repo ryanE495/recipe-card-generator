@@ -398,13 +398,13 @@ import Layout from '../layouts/Layout.astro';
 <style is:global>
   /* ===== SIZE SYSTEM (landscape orientation) ===== */
   .recipe-card {
-    overflow: hidden;
+    overflow: visible;
     position: relative;
     transition: all 0.3s ease;
   }
-  .size-3x5 { width: 5in; height: 3in; overflow-y: auto; }
-  .size-4x6 { width: 6in; height: 4in; overflow-y: auto; }
-  .size-5x7 { width: 7in; height: 5in; overflow-y: auto; }
+  .size-3x5 { width: 5in; }
+  .size-4x6 { width: 6in; }
+  .size-5x7 { width: 7in; }
   .size-full { width: 100%; max-width: 800px; }
 
   /* ===== GRANDMA'S TEMPLATE ===== */
