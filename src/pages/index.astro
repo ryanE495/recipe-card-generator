@@ -1142,13 +1142,14 @@ import Layout from '../layouts/Layout.astro';
     const r = currentRecipe;
     const ingredientsHtml = (r.ingredients || []).map(i => `<li>${i}</li>`).join('');
     const instructionsHtml = (r.instructions || []).map(i => `<li>${i}</li>`).join('');
+    const tipsHtml = r.tips ? `<div class="card-notes card-tips"><strong>Tips: </strong>${r.tips}</div>` : '';
     const notesHtml = r.notes ? `<div class="card-notes"><strong>Notes: </strong>${r.notes}</div>` : '';
 
     // All templates use two-column layout for landscape note card feel
     const bodyContent = `
       <div><h3 class="section-title">Ingredients</h3><ul class="ingredients-list">${ingredientsHtml}</ul></div>
       <div><h3 class="section-title">Instructions</h3><ol class="instructions-list">${instructionsHtml}</ol></div>
-      ${notesHtml}`;
+      ${tipsHtml}${notesHtml}`;
 
     recipeCard.className = `recipe-card template-${currentTemplate} size-${currentSize} fade-up`;
     recipeCard.innerHTML = `

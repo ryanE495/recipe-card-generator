@@ -28,18 +28,21 @@ export default async (req) => {
             content: [
               {
                 type: 'text',
-                text: `Extract the recipe from this image. Return ONLY a valid JSON object with this exact structure, no other text:
+                text: `Extract the COMPLETE recipe from this image word-for-word. Do NOT summarize, shorten, or paraphrase anything. Every instruction must be transcribed in FULL — include all details, parenthetical notes, measurements, and sub-steps exactly as written. If there are tips, notes, or sidebars, include ALL of them.
+
+Return ONLY a valid JSON object with this exact structure, no other text:
 {
   "title": "Recipe Title",
-  "description": "Brief description of the dish",
+  "description": "Brief description from the recipe (verbatim if present)",
   "prepTime": "15 mins",
   "cookTime": "30 mins",
-  "servings": "4",
-  "ingredients": ["1 cup flour", "2 eggs"],
-  "instructions": ["Step one.", "Step two."],
-  "notes": "Any additional notes or tips"
+  "servings": "4 servings (or yield info exactly as written)",
+  "ingredients": ["7 cups granulated sugar", "8 cups whole strawberries (approx.)"],
+  "instructions": ["Full complete step one with ALL details, parenthetical notes, and sub-instructions exactly as written.", "Full complete step two..."],
+  "tips": "Any tips, hints, or sidebar text from the recipe — transcribe in full",
+  "notes": "Any additional notes verbatim from the recipe"
 }
-If you cannot determine a field, use a reasonable default.`
+CRITICAL: Do NOT shorten or summarize instructions. Each step must be the COMPLETE text from the original. If a step is a full paragraph, return the full paragraph. If you cannot determine a field, use a reasonable default.`
               },
               {
                 type: 'image_url',
@@ -51,7 +54,7 @@ If you cannot determine a field, use a reasonable default.`
           },
         ],
         temperature: 0.1,
-        max_tokens: 2000,
+        max_tokens: 4000,
       }),
     });
 
