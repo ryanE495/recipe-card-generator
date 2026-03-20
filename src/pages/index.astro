@@ -400,8 +400,12 @@ import Layout from '../layouts/Layout.astro';
     margin: 32px 0 60px;
   }
 
+</style>
+
+<style is:global>
   /* =======================================
-     RECIPE CARD BASE
+     RECIPE CARD BASE — must be global because
+     card HTML is injected via JS innerHTML
      ======================================= */
   .recipe-card {
     background: white;
