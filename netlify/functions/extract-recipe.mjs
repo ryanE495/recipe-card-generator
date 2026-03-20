@@ -3,9 +3,9 @@ export default async (req) => {
     return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 });
   }
 
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    return new Response(JSON.stringify({ error: 'OPENAI_API_KEY not configured' }), { status: 500 });
+    return new Response(JSON.stringify({ error: 'GEMINI_API_KEY not configured' }), { status: 500 });
   }
 
   try {
@@ -14,18 +14,22 @@ export default async (req) => {
       return new Response(JSON.stringify({ error: 'No image provided' }), { status: 400 });
     }
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    // Extract base64 data and mime type from data URL
+    const match = image.match(/^data:(image\/\w+);base64,(.+)$/);
+    if (!match) {
+      return new Response(JSON.stringify({ error: 'Invalid image format. Expected base64 data URL.' }), { status: 400 });
+    }
+    const mimeType = match[1];
+    const base64Data = match[2];
+
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'gpt-4o',
-        messages: [
-          {
-            role: 'system',
-            content: `You are a recipe extraction assistant. Extract recipe information from images and return valid JSON only. Always respond with this exact JSON structure:
+        contents: [{
+          parts: [
+            {
+              text: `Extract the recipe from this image. Return ONLY a valid JSON object with this exact structure, no other text:
 {
   "title": "Recipe Title",
   "description": "Brief description of the dish",
@@ -36,27 +40,34 @@ export default async (req) => {
   "instructions": ["Step one.", "Step two."],
   "notes": "Any additional notes or tips"
 }
-If you cannot determine a field, use a reasonable default. Do not include any text outside the JSON.`
-          },
-          {
-            role: 'user',
-            content: [
-              { type: 'text', text: 'Please extract the recipe from this image. Return only the JSON object.' },
-              { type: 'image_url', image_url: { url: image } }
-            ]
-          }
-        ],
-        max_tokens: 2000,
+If you cannot determine a field, use a reasonable default.`
+            },
+            {
+              inlineData: {
+                mimeType: mimeType,
+                data: base64Data
+              }
+            }
+          ]
+        }],
+        generationConfig: {
+          temperature: 0.1,
+          maxOutputTokens: 2000,
+        }
       }),
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      return new Response(JSON.stringify({ error: data.error?.message || 'OpenAI API error' }), { status: 500 });
+      return new Response(JSON.stringify({ error: data.error?.message || 'Gemini API error' }), { status: 500 });
     }
 
-    const content = data.choices[0].message.content;
+    const content = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!content) {
+      return new Response(JSON.stringify({ error: 'No response from Gemini' }), { status: 500 });
+    }
+
     // Extract JSON from possible markdown code blocks
     const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/) || [null, content];
     const recipe = JSON.parse(jsonMatch[1].trim());
