@@ -402,10 +402,46 @@ import Layout from '../layouts/Layout.astro';
     position: relative;
     transition: all 0.3s ease;
   }
-  .size-3x5 { width: 5in; }
-  .size-4x6 { width: 6in; }
-  .size-5x7 { width: 7in; }
+  .size-3x5 { width: min(100%, 5in); }
+  .size-4x6 { width: min(100%, 6in); }
+  .size-5x7 { width: min(100%, 7in); }
   .size-full { width: 100%; max-width: 800px; }
+
+  /* Force two-column landscape layout on all sized cards */
+  .size-3x5 .card-body,
+  .size-4x6 .card-body,
+  .size-5x7 .card-body,
+  .size-full .card-body {
+    display: grid !important;
+    grid-template-columns: 1fr 1.5fr !important;
+    gap: 8px 20px !important;
+  }
+  .size-3x5 .card-notes,
+  .size-4x6 .card-notes,
+  .size-5x7 .card-notes,
+  .size-full .card-notes {
+    grid-column: 1 / -1 !important;
+  }
+
+  /* Tighter spacing for smaller cards */
+  .size-3x5 .card-header { padding-top: 14px !important; padding-bottom: 6px !important; }
+  .size-3x5 .card-meta { padding-top: 4px !important; padding-bottom: 4px !important; }
+  .size-3x5 .card-body { padding: 6px 16px 14px 16px !important; font-size: 0.8rem; }
+  .size-3x5.template-grandma .card-body { padding-left: 44px !important; }
+  .size-3x5.template-grandma::after { left: 36px; }
+  .size-3x5.template-grandma .card-header,
+  .size-3x5.template-grandma .card-meta { padding-left: 44px !important; }
+  .size-3x5 .card-header h2 { font-size: 1.4rem !important; }
+  .size-3x5 .section-title { font-size: 1rem !important; margin-bottom: 4px !important; }
+  .size-3x5 .ingredients-list li,
+  .size-3x5 .instructions-list li { font-size: 0.78rem !important; padding: 1px 0 !important; line-height: 1.4 !important; }
+
+  .size-4x6 .card-header { padding-top: 18px !important; padding-bottom: 8px !important; }
+  .size-4x6 .card-body { padding: 8px 28px 20px 28px !important; font-size: 0.85rem; }
+  .size-4x6 .card-header h2 { font-size: 1.6rem !important; }
+  .size-4x6 .section-title { font-size: 1.1rem !important; margin-bottom: 6px !important; }
+  .size-4x6 .ingredients-list li,
+  .size-4x6 .instructions-list li { font-size: 0.82rem !important; line-height: 1.45 !important; }
 
   /* ===== GRANDMA'S TEMPLATE ===== */
   .template-grandma {
@@ -437,7 +473,7 @@ import Layout from '../layouts/Layout.astro';
     content: '';
     position: absolute;
     top: 0;
-    left: 56px;
+    left: 48px;
     bottom: 0;
     width: 1.5px;
     background: rgba(220,120,120,0.25);
@@ -445,7 +481,7 @@ import Layout from '../layouts/Layout.astro';
     z-index: 0;
   }
   .template-grandma .card-header {
-    padding: 20px 32px 10px 64px;
+    padding: 18px 24px 8px 56px;
     position: relative;
     z-index: 1;
     border-bottom: none;
@@ -465,7 +501,7 @@ import Layout from '../layouts/Layout.astro';
   .template-grandma .card-meta {
     display: flex;
     gap: 16px;
-    padding: 4px 32px 8px 64px;
+    padding: 2px 24px 6px 56px;
     position: relative;
     z-index: 1;
     flex-wrap: wrap;
@@ -479,12 +515,9 @@ import Layout from '../layouts/Layout.astro';
     margin-right: 2px;
   }
   .template-grandma .card-body {
-    padding: 8px 32px 24px 64px;
+    padding: 8px 24px 24px 56px;
     position: relative;
     z-index: 1;
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 12px 24px;
   }
   .template-grandma .section-title {
     font-family: 'Caveat', cursive;
