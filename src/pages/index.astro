@@ -1033,23 +1033,33 @@ import Layout from '../layouts/Layout.astro';
   }
 
   @media print {
+    @page {
+      size: landscape;
+      margin: 0.25in;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: white !important;
+    }
     .recipe-card {
       box-shadow: none !important;
       overflow: visible !important;
       break-inside: avoid;
+      page-break-inside: avoid;
+      width: 100% !important;
+      max-width: 100% !important;
+      max-height: 100vh;
     }
-    .size-3x5 { width: 5in; height: 3in; }
-    .size-4x6 { width: 6in; height: 4in; }
-    .size-5x7 { width: 7in; height: 5in; }
-    .size-full { width: 100%; }
-
-    .template-grandma::before,
-    .template-grandma::after,
-    .template-vintage::before,
-    .template-farmhouse::before,
-    .template-heirloom::before {
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
+    /* Scale card to fit one page */
+    .card-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100vh;
+      overflow: hidden;
     }
     .recipe-card * {
       -webkit-print-color-adjust: exact !important;
@@ -1187,7 +1197,31 @@ import Layout from '../layouts/Layout.astro';
   });
 
   // Actions
-  $('#print-btn').addEventListener('click', () => window.print());
+  $('#print-btn').addEventListener('click', () => {
+    // Scale card to fit one page
+    const card = recipeCard;
+    const cardHeight = card.scrollHeight;
+    const cardWidth = card.scrollWidth;
+    // Landscape page ~9.5in x 7in printable at 96dpi
+    const pageWidth = 9.5 * 96;
+    const pageHeight = 7 * 96;
+    const scaleX = pageWidth / cardWidth;
+    const scaleY = pageHeight / cardHeight;
+    const scale = Math.min(scaleX, scaleY, 1); // don't scale up, only down
+    
+    card.style.transform = `scale(${scale})`;
+    card.style.transformOrigin = 'top left';
+    card.style.width = `${cardWidth}px`;
+    
+    window.print();
+    
+    // Reset after print
+    setTimeout(() => {
+      card.style.transform = '';
+      card.style.transformOrigin = '';
+      card.style.width = '';
+    }, 500);
+  });
 
   $('#download-btn').addEventListener('click', async () => {
     const { domToPng } = await import('modern-screenshot');
