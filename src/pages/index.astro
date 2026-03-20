@@ -411,7 +411,7 @@ import Layout from '../layouts/Layout.astro';
   .recipe-card .card-body {
     display: grid !important;
     grid-template-columns: 1fr 1.6fr !important;
-    gap: 4px 20px !important;
+    gap: 8px 24px !important;
   }
   .card-col-left, .card-col-right {
     min-width: 0;
@@ -425,7 +425,18 @@ import Layout from '../layouts/Layout.astro';
   .card-col-left .card-notes,
   .card-col-left .card-tips {
     margin-top: 12px;
-    font-size: 0.82rem;
+    font-size: 0.85rem;
+  }
+
+  /* Mobile: stack columns vertically, full width */
+  @media (max-width: 700px) {
+    .size-3x5, .size-4x6, .size-5x7 {
+      width: 100% !important;
+    }
+    .recipe-card .card-body {
+      grid-template-columns: 1fr !important;
+      gap: 16px !important;
+    }
   }
 
   /* Tighter spacing for smaller cards */
@@ -684,7 +695,7 @@ import Layout from '../layouts/Layout.astro';
     list-style: none;
   }
   .template-vintage .instructions-list li {
-    padding: 8px 0 8px 36px;
+    padding: 8px 0 8px 38px;
     position: relative;
     font-size: 0.92rem;
     color: #4A3D2E;
@@ -825,7 +836,7 @@ import Layout from '../layouts/Layout.astro';
     list-style: none;
   }
   .template-farmhouse .instructions-list li {
-    padding: 10px 0 10px 40px;
+    padding: 10px 0 10px 42px;
     position: relative;
     font-size: 0.92rem;
     line-height: 1.7;
@@ -981,26 +992,22 @@ import Layout from '../layouts/Layout.astro';
   .template-heirloom .card-notes strong { color: #2C2418; font-style: normal; }
 
   /* ===== RESPONSIVE CARD OVERRIDES ===== */
-  @media (max-width: 640px) {
+  @media (max-width: 700px) {
     .size-3x5, .size-4x6, .size-5x7, .size-full {
       width: 100% !important;
       min-height: auto !important;
     }
     .template-grandma .card-header,
     .template-grandma .card-body,
-    .template-grandma .card-meta { padding-left: 48px; padding-right: 24px; }
+    .template-grandma .card-meta { padding-left: 48px; padding-right: 20px; }
     .template-grandma .decor-margin { left: 36px; }
     .template-vintage .card-header,
-    .template-vintage .card-body { padding-left: 28px; padding-right: 28px; }
-    .template-vintage .ingredients-list { columns: 1; }
+    .template-vintage .card-body { padding-left: 24px; padding-right: 24px; }
     .template-farmhouse .card-header,
-    .template-farmhouse .card-body { padding-left: 24px; padding-right: 24px; }
-    .template-farmhouse .ingredients-list { columns: 1; }
+    .template-farmhouse .card-body { padding-left: 20px; padding-right: 20px; }
     .template-heirloom .card-header,
-    .template-heirloom .card-meta { padding-left: 28px; padding-right: 28px; }
-    .template-heirloom .card-body {
-      padding: 20px 28px 36px;
-    }
+    .template-heirloom .card-meta,
+    .template-heirloom .card-body { padding-left: 24px; padding-right: 24px; }
   }
 
   @media print {
