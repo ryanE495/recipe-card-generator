@@ -1,0 +1,54 @@
+---
+interface Props { title: string; }
+const { title } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style is:global>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --sage: #8B9D83;
+      --sage-light: #C5D1BE;
+      --sage-dark: #6B7D63;
+      --terracotta: #C4826D;
+      --terracotta-light: #E8B4A2;
+      --cream: #FBF8F4;
+      --warm-white: #FEFCF9;
+      --warm-gray: #8A8580;
+      --dark: #3D3832;
+      --card-shadow: 0 4px 24px rgba(61, 56, 50, 0.08);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.6s ease forwards; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white; }
+      .recipe-card { box-shadow: none !important; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <slot />
+</body>
+</html>

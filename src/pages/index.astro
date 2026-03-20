@@ -1,0 +1,739 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Recipe Card Generator ✨">
+  <div class="no-print">
+    <header>
+      <div class="container">
+        <div class="logo">
+          <span class="logo-icon">🍽</span>
+          <h1>Recipe Cards</h1>
+          <p class="tagline">Upload a recipe photo, get a beautiful card</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="container" id="app">
+      <!-- Upload Section -->
+      <section id="upload-section" class="fade-up">
+        <div id="drop-zone" class="drop-zone">
+          <div class="drop-zone-content">
+            <div class="upload-icon">📸</div>
+            <h2>Drop your recipe photo here</h2>
+            <p>or click to browse — handwritten, cookbook page, screenshot, anything!</p>
+            <input type="file" id="file-input" accept="image/*" hidden />
+          </div>
+          <div id="preview-container" class="preview-container" style="display:none;">
+            <img id="preview-image" alt="Preview" />
+            <button id="remove-image" class="btn-remove" title="Remove">✕</button>
+          </div>
+        </div>
+        <button id="extract-btn" class="btn-primary" style="display:none;">
+          <span class="btn-text">✨ Extract Recipe</span>
+          <span class="btn-loading" style="display:none;">
+            <span class="spinner"></span> Reading your recipe...
+          </span>
+        </button>
+      </section>
+
+      <!-- Error -->
+      <div id="error-msg" class="error-msg" style="display:none;"></div>
+    </main>
+  </div>
+
+  <!-- Recipe Card Output -->
+  <section id="card-section" class="container" style="display:none;">
+    <div class="no-print card-controls fade-up">
+      <h2>Your Recipe Card</h2>
+      <div class="template-picker">
+        <button class="tmpl-btn active" data-template="classic">Classic</button>
+        <button class="tmpl-btn" data-template="modern">Modern</button>
+        <button class="tmpl-btn" data-template="minimal">Minimal</button>
+      </div>
+    </div>
+    <div id="recipe-card" class="recipe-card template-classic fade-up"></div>
+    <div class="no-print action-bar fade-up">
+      <button id="print-btn" class="btn-secondary">🖨 Print</button>
+      <button id="download-btn" class="btn-secondary">📥 Download Image</button>
+      <button id="email-btn" class="btn-secondary">✉️ Copy Email HTML</button>
+      <button id="new-btn" class="btn-outline">+ New Recipe</button>
+    </div>
+  </section>
+
+  <!-- Email HTML Modal -->
+  <div id="email-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <button id="close-modal" class="btn-remove">✕</button>
+      <h3>Email-Friendly HTML</h3>
+      <p>Copy this HTML and paste it into your email composer:</p>
+      <textarea id="email-html" readonly rows="12"></textarea>
+      <button id="copy-email" class="btn-primary" style="margin-top:12px;">📋 Copy to Clipboard</button>
+    </div>
+  </div>
+
+<style>
+  header {
+    text-align: center;
+    padding: 48px 0 32px;
+  }
+  .logo-icon { font-size: 2.5rem; }
+  .logo h1 {
+    font-size: 2.4rem;
+    color: var(--dark);
+    margin: 8px 0 4px;
+    font-weight: 700;
+  }
+  .tagline {
+    color: var(--warm-gray);
+    font-size: 1.05rem;
+    font-weight: 300;
+  }
+  .drop-zone {
+    border: 2px dashed var(--sage-light);
+    border-radius: 20px;
+    padding: 60px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    background: var(--warm-white);
+    position: relative;
+  }
+  .drop-zone:hover, .drop-zone.drag-over {
+    border-color: var(--sage);
+    background: #f5f2ed;
+    transform: scale(1.01);
+  }
+  .upload-icon { font-size: 3rem; margin-bottom: 12px; }
+  .drop-zone h2 { font-size: 1.4rem; margin-bottom: 6px; color: var(--dark); }
+  .drop-zone p { color: var(--warm-gray); font-size: 0.95rem; }
+  .preview-container {
+    position: relative;
+    display: inline-block;
+  }
+  .preview-container img {
+    max-width: 100%;
+    max-height: 340px;
+    border-radius: 12px;
+    object-fit: contain;
+  }
+  .btn-remove {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-primary {
+    display: block;
+    margin: 24px auto 0;
+    padding: 16px 40px;
+    background: var(--sage);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-primary:hover { background: var(--sage-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(107,125,99,0.3); }
+  .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .btn-secondary {
+    padding: 12px 24px;
+    background: var(--warm-white);
+    border: 1.5px solid var(--sage-light);
+    border-radius: 50px;
+    color: var(--dark);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-secondary:hover { border-color: var(--sage); background: #f0ede8; }
+  .btn-outline {
+    padding: 12px 24px;
+    background: transparent;
+    border: 1.5px solid var(--terracotta-light);
+    border-radius: 50px;
+    color: var(--terracotta);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-outline:hover { background: var(--terracotta); color: white; }
+  .spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  .error-msg {
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    color: #B91C1C;
+    padding: 14px 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+  .card-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 48px 0 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .card-controls h2 { font-size: 1.6rem; }
+  .template-picker { display: flex; gap: 8px; }
+  .tmpl-btn {
+    padding: 8px 20px;
+    border-radius: 50px;
+    border: 1.5px solid var(--sage-light);
+    background: white;
+    color: var(--dark);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: 'Inter', sans-serif;
+    transition: var(--transition);
+  }
+  .tmpl-btn.active, .tmpl-btn:hover {
+    background: var(--sage);
+    color: white;
+    border-color: var(--sage);
+  }
+  .action-bar {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 28px 0 60px;
+  }
+
+  /* ===== RECIPE CARD STYLES ===== */
+  .recipe-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    max-width: 750px;
+    margin: 0 auto;
+  }
+
+  /* --- Classic Template --- */
+  .template-classic .card-header {
+    background: linear-gradient(135deg, var(--sage) 0%, var(--sage-dark) 100%);
+    color: white;
+    padding: 36px 40px 28px;
+    text-align: center;
+  }
+  .template-classic .card-header h2 {
+    font-size: 2rem;
+    margin-bottom: 6px;
+  }
+  .template-classic .card-header .desc {
+    font-style: italic;
+    opacity: 0.9;
+    font-family: 'Playfair Display', serif;
+  }
+  .template-classic .card-meta {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    padding: 18px 20px;
+    background: #f9f7f4;
+    border-bottom: 1px solid #eee;
+    flex-wrap: wrap;
+  }
+  .template-classic .meta-item {
+    text-align: center;
+    font-size: 0.85rem;
+  }
+  .template-classic .meta-item strong {
+    display: block;
+    font-size: 1.05rem;
+    color: var(--sage-dark);
+  }
+  .template-classic .card-body { padding: 32px 40px 40px; }
+  .template-classic .section-title {
+    font-size: 1.2rem;
+    color: var(--sage-dark);
+    margin-bottom: 14px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--sage-light);
+    display: inline-block;
+  }
+  .template-classic .ingredients-list {
+    list-style: none;
+    columns: 2;
+    column-gap: 24px;
+    margin-bottom: 32px;
+  }
+  .template-classic .ingredients-list li {
+    padding: 5px 0 5px 22px;
+    position: relative;
+    break-inside: avoid;
+    font-size: 0.95rem;
+  }
+  .template-classic .ingredients-list li::before {
+    content: '•';
+    position: absolute;
+    left: 4px;
+    color: var(--terracotta);
+    font-weight: bold;
+  }
+  .template-classic .instructions-list {
+    list-style: none;
+    counter-reset: step;
+  }
+  .template-classic .instructions-list li {
+    padding: 10px 0 10px 44px;
+    position: relative;
+    border-bottom: 1px solid #f0ede8;
+    font-size: 0.95rem;
+    counter-increment: step;
+  }
+  .template-classic .instructions-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--sage-light);
+    color: var(--sage-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+  .template-classic .card-notes {
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: #FFF8F0;
+    border-left: 3px solid var(--terracotta-light);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.9rem;
+    color: var(--warm-gray);
+  }
+  .template-classic .card-notes strong { color: var(--terracotta); }
+
+  /* --- Modern Template --- */
+  .template-modern .card-header {
+    background: var(--dark);
+    color: white;
+    padding: 40px 40px 32px;
+  }
+  .template-modern .card-header h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .template-modern .card-header .desc {
+    color: rgba(255,255,255,0.7);
+    margin-top: 6px;
+    font-weight: 300;
+  }
+  .template-modern .card-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: var(--terracotta);
+    color: white;
+    text-align: center;
+  }
+  .template-modern .meta-item {
+    padding: 14px 10px;
+    border-right: 1px solid rgba(255,255,255,0.2);
+    font-size: 0.85rem;
+  }
+  .template-modern .meta-item:last-child { border-right: none; }
+  .template-modern .meta-item strong { display: block; font-size: 1.1rem; }
+  .template-modern .card-body { padding: 32px 40px 40px; }
+  .template-modern .section-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--terracotta);
+    margin-bottom: 16px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+  }
+  .template-modern .ingredients-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 20px;
+    margin-bottom: 32px;
+  }
+  .template-modern .ingredients-list li {
+    padding: 8px 12px;
+    background: #f9f7f4;
+    border-radius: 8px;
+    font-size: 0.9rem;
+  }
+  .template-modern .instructions-list {
+    list-style: none;
+    counter-reset: step;
+  }
+  .template-modern .instructions-list li {
+    padding: 12px 0 12px 52px;
+    position: relative;
+    font-size: 0.95rem;
+    counter-increment: step;
+  }
+  .template-modern .instructions-list li::before {
+    content: '0' counter(step);
+    position: absolute;
+    left: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--terracotta-light);
+  }
+  .template-modern .card-notes {
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: var(--dark);
+    color: rgba(255,255,255,0.8);
+    border-radius: 10px;
+    font-size: 0.9rem;
+  }
+  .template-modern .card-notes strong { color: var(--terracotta-light); }
+
+  /* --- Minimal Template --- */
+  .template-minimal .card-header {
+    padding: 40px 40px 8px;
+    border-bottom: none;
+  }
+  .template-minimal .card-header h2 {
+    font-size: 2.4rem;
+    font-weight: 400;
+    font-family: 'Caveat', cursive;
+    color: var(--dark);
+  }
+  .template-minimal .card-header .desc {
+    color: var(--warm-gray);
+    font-size: 0.95rem;
+    font-weight: 300;
+  }
+  .template-minimal .card-meta {
+    display: flex;
+    gap: 20px;
+    padding: 14px 40px;
+    font-size: 0.8rem;
+    color: var(--warm-gray);
+    flex-wrap: wrap;
+  }
+  .template-minimal .meta-item strong {
+    color: var(--dark);
+    margin-right: 4px;
+  }
+  .template-minimal .card-body {
+    padding: 20px 40px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 32px;
+  }
+  .template-minimal .section-title {
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+    color: var(--sage);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .template-minimal .ingredients-list {
+    list-style: none;
+  }
+  .template-minimal .ingredients-list li {
+    padding: 6px 0;
+    border-bottom: 1px dotted #ddd;
+    font-size: 0.9rem;
+  }
+  .template-minimal .instructions-list {
+    list-style: none;
+    counter-reset: step;
+  }
+  .template-minimal .instructions-list li {
+    padding: 8px 0;
+    font-size: 0.9rem;
+    counter-increment: step;
+  }
+  .template-minimal .instructions-list li::before {
+    content: counter(step) '.';
+    color: var(--sage);
+    font-weight: 600;
+    margin-right: 8px;
+  }
+  .template-minimal .card-notes {
+    grid-column: 1 / -1;
+    padding: 14px 0;
+    border-top: 1px solid #eee;
+    font-size: 0.85rem;
+    color: var(--warm-gray);
+    font-style: italic;
+  }
+
+  /* Modal */
+  .modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+  }
+  .modal-content {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .modal-content h3 { margin-bottom: 8px; }
+  .modal-content textarea {
+    width: 100%;
+    font-family: monospace;
+    font-size: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    resize: vertical;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 640px) {
+    .logo h1 { font-size: 1.8rem; }
+    .drop-zone { padding: 40px 16px; }
+    .template-classic .ingredients-list,
+    .template-modern .ingredients-list { columns: 1; grid-template-columns: 1fr; }
+    .template-classic .card-body,
+    .template-modern .card-body { padding: 24px 20px 32px; }
+    .template-classic .card-header,
+    .template-modern .card-header { padding: 28px 20px 24px; }
+    .template-minimal .card-body { grid-template-columns: 1fr; }
+    .template-minimal .card-header { padding: 28px 20px 8px; }
+    .template-minimal .card-meta { padding: 14px 20px; }
+    .card-controls { justify-content: center; text-align: center; }
+  }
+</style>
+
+<script>
+  const $ = (s) => document.querySelector(s);
+  const dropZone = $('#drop-zone');
+  const fileInput = $('#file-input');
+  const previewContainer = $('#preview-container');
+  const previewImage = $('#preview-image');
+  const extractBtn = $('#extract-btn');
+  const uploadSection = $('#upload-section');
+  const cardSection = $('#card-section');
+  const recipeCard = $('#recipe-card');
+  const errorMsg = $('#error-msg');
+  let base64Image = '';
+  let currentRecipe = null;
+  let currentTemplate = 'classic';
+
+  // --- Upload handling ---
+  dropZone.addEventListener('click', () => fileInput.click());
+  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+  });
+  fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
+
+  function handleFile(file) {
+    if (!file.type.startsWith('image/')) return showError('Please upload an image file.');
+    if (file.size > 20 * 1024 * 1024) return showError('Image must be under 20MB.');
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      base64Image = e.target.result;
+      previewImage.src = base64Image;
+      previewContainer.style.display = 'inline-block';
+      dropZone.querySelector('.drop-zone-content').style.display = 'none';
+      extractBtn.style.display = 'block';
+      hideError();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  $('#remove-image').addEventListener('click', (e) => {
+    e.stopPropagation();
+    base64Image = '';
+    previewContainer.style.display = 'none';
+    dropZone.querySelector('.drop-zone-content').style.display = 'block';
+    extractBtn.style.display = 'none';
+    fileInput.value = '';
+  });
+
+  // --- Extract ---
+  extractBtn.addEventListener('click', async () => {
+    if (!base64Image) return;
+    extractBtn.disabled = true;
+    extractBtn.querySelector('.btn-text').style.display = 'none';
+    extractBtn.querySelector('.btn-loading').style.display = 'inline';
+    hideError();
+    try {
+      const res = await fetch('/api/extract-recipe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: base64Image }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to extract recipe');
+      currentRecipe = data;
+      renderCard();
+      cardSection.style.display = 'block';
+      cardSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (err) {
+      showError(err.message);
+    } finally {
+      extractBtn.disabled = false;
+      extractBtn.querySelector('.btn-text').style.display = 'inline';
+      extractBtn.querySelector('.btn-loading').style.display = 'none';
+    }
+  });
+
+  // --- Render card ---
+  function renderCard() {
+    if (!currentRecipe) return;
+    const r = currentRecipe;
+    const ingredientsHtml = (r.ingredients || []).map(i => `<li>${i}</li>`).join('');
+    const instructionsHtml = (r.instructions || []).map(i => `<li>${i}</li>`).join('');
+    const notesHtml = r.notes ? `<div class="card-notes"><strong>Notes: </strong>${r.notes}</div>` : '';
+
+    let bodyContent;
+    if (currentTemplate === 'minimal') {
+      bodyContent = `
+        <div><h3 class="section-title">Ingredients</h3><ul class="ingredients-list">${ingredientsHtml}</ul></div>
+        <div><h3 class="section-title">Instructions</h3><ol class="instructions-list">${instructionsHtml}</ol></div>
+        ${notesHtml}`;
+    } else {
+      bodyContent = `
+        <h3 class="section-title">Ingredients</h3>
+        <ul class="ingredients-list">${ingredientsHtml}</ul>
+        <h3 class="section-title">Instructions</h3>
+        <ol class="instructions-list">${instructionsHtml}</ol>
+        ${notesHtml}`;
+    }
+
+    recipeCard.className = `recipe-card template-${currentTemplate} fade-up`;
+    recipeCard.innerHTML = `
+      <div class="card-header">
+        <h2>${r.title || 'Untitled Recipe'}</h2>
+        ${r.description ? `<p class="desc">${r.description}</p>` : ''}
+      </div>
+      <div class="card-meta">
+        <div class="meta-item"><strong>${r.prepTime || '—'}</strong> Prep</div>
+        <div class="meta-item"><strong>${r.cookTime || '—'}</strong> Cook</div>
+        <div class="meta-item"><strong>${r.servings || '—'}</strong> Servings</div>
+      </div>
+      <div class="card-body">${bodyContent}</div>
+    `;
+  }
+
+  // --- Template switching ---
+  document.querySelectorAll('.tmpl-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tmpl-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentTemplate = btn.dataset.template;
+      renderCard();
+    });
+  });
+
+  // --- Actions ---
+  $('#print-btn').addEventListener('click', () => window.print());
+
+  $('#download-btn').addEventListener('click', async () => {
+    const { default: html2canvas } = await import('html2canvas');
+    const canvas = await html2canvas(recipeCard, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+    const a = document.createElement('a');
+    a.download = `${(currentRecipe?.title || 'recipe').replace(/\s+/g, '-').toLowerCase()}-card.png`;
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+  });
+
+  $('#email-btn').addEventListener('click', () => {
+    if (!currentRecipe) return;
+    const r = currentRecipe;
+    const html = generateEmailHtml(r);
+    $('#email-html').value = html;
+    $('#email-modal').style.display = 'flex';
+  });
+
+  $('#close-modal').addEventListener('click', () => { $('#email-modal').style.display = 'none'; });
+  $('#email-modal').addEventListener('click', (e) => { if (e.target === $('#email-modal')) $('#email-modal').style.display = 'none'; });
+
+  $('#copy-email').addEventListener('click', () => {
+    $('#email-html').select();
+    navigator.clipboard.writeText($('#email-html').value);
+    $('#copy-email').textContent = '✅ Copied!';
+    setTimeout(() => { $('#copy-email').textContent = '📋 Copy to Clipboard'; }, 2000);
+  });
+
+  $('#new-btn').addEventListener('click', () => {
+    cardSection.style.display = 'none';
+    base64Image = '';
+    previewContainer.style.display = 'none';
+    dropZone.querySelector('.drop-zone-content').style.display = 'block';
+    extractBtn.style.display = 'none';
+    fileInput.value = '';
+    currentRecipe = null;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  function generateEmailHtml(r) {
+    const ingredients = (r.ingredients || []).map(i => `<li style="padding:4px 0;">${i}</li>`).join('');
+    const instructions = (r.instructions || []).map((s, i) => `<li style="padding:6px 0;"><strong>${i + 1}.</strong> ${s}</li>`).join('');
+    return `<div style="max-width:600px;margin:0 auto;font-family:Georgia,serif;color:#3D3832;">
+  <div style="background:#8B9D83;color:white;padding:28px 24px;text-align:center;border-radius:12px 12px 0 0;">
+    <h1 style="margin:0;font-size:24px;">${r.title || 'Recipe'}</h1>
+    ${r.description ? `<p style="margin:8px 0 0;opacity:0.9;font-style:italic;">${r.description}</p>` : ''}
+  </div>
+  <div style="background:#f9f7f4;padding:12px 24px;text-align:center;font-size:14px;">
+    <span>⏱ Prep: <strong>${r.prepTime || '—'}</strong></span> &nbsp;|&nbsp;
+    <span>🔥 Cook: <strong>${r.cookTime || '—'}</strong></span> &nbsp;|&nbsp;
+    <span>🍽 Serves: <strong>${r.servings || '—'}</strong></span>
+  </div>
+  <div style="background:white;padding:24px;border:1px solid #eee;">
+    <h2 style="color:#8B9D83;font-size:18px;border-bottom:2px solid #C5D1BE;padding-bottom:6px;">Ingredients</h2>
+    <ul style="list-style:disc;padding-left:20px;">${ingredients}</ul>
+    <h2 style="color:#8B9D83;font-size:18px;border-bottom:2px solid #C5D1BE;padding-bottom:6px;margin-top:20px;">Instructions</h2>
+    <ol style="list-style:none;padding:0;">${instructions}</ol>
+    ${r.notes ? `<div style="margin-top:16px;padding:12px;background:#FFF8F0;border-left:3px solid #E8B4A2;font-size:14px;"><strong>Notes:</strong> ${r.notes}</div>` : ''}
+  </div>
+  <div style="text-align:center;padding:16px;font-size:12px;color:#8A8580;border-radius:0 0 12px 12px;background:#f9f7f4;">
+    Made with ✨ Recipe Card Generator
+  </div>
+</div>`;
+  }
+
+  function showError(msg) { errorMsg.textContent = msg; errorMsg.style.display = 'block'; }
+  function hideError() { errorMsg.style.display = 'none'; }
+</script>
+</Layout>
