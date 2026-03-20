@@ -548,19 +548,20 @@ import Layout from '../layouts/Layout.astro';
   }
   .template-grandma .instructions-list {
     list-style: none;
-    counter-reset: step;
   }
   .template-grandma .instructions-list li {
     padding: 2px 0;
     font-size: 1rem;
     color: #4A3728;
-    counter-increment: step;
     line-height: 1.5;
   }
-  .template-grandma .instructions-list li::before {
-    content: counter(step) '. ';
+  .template-grandma .instructions-list .step-num {
     color: #8B7355;
     font-weight: 700;
+    margin-right: 4px;
+  }
+  .template-grandma .instructions-list .step-num::after {
+    content: '.';
   }
   .template-grandma .card-notes {
     margin-top: 8px;
@@ -677,31 +678,28 @@ import Layout from '../layouts/Layout.astro';
   }
   .template-vintage .instructions-list {
     list-style: none;
-    counter-reset: step;
   }
   .template-vintage .instructions-list li {
-    padding: 10px 0 10px 40px;
+    padding: 8px 0 8px 36px;
     position: relative;
     font-size: 0.92rem;
-    counter-increment: step;
     color: #4A3D2E;
     border-bottom: 1px dotted #D8CAA8;
     line-height: 1.7;
   }
   .template-vintage .instructions-list li:last-child { border-bottom: none; }
-  .template-vintage .instructions-list li::before {
-    content: counter(step);
+  .template-vintage .instructions-list .step-num {
     position: absolute;
     left: 0;
     top: 8px;
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     border: 1.5px solid #C8B896;
     border-radius: 50%;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 600;
     color: #3C2F1E;
     font-family: 'Playfair Display', serif;
@@ -821,31 +819,28 @@ import Layout from '../layouts/Layout.astro';
   }
   .template-farmhouse .instructions-list {
     list-style: none;
-    counter-reset: step;
   }
   .template-farmhouse .instructions-list li {
-    padding: 12px 0 12px 44px;
+    padding: 10px 0 10px 40px;
     position: relative;
     font-size: 0.92rem;
-    counter-increment: step;
     line-height: 1.7;
     border-bottom: 1px dashed #DDD2BE;
   }
   .template-farmhouse .instructions-list li:last-child { border-bottom: none; }
-  .template-farmhouse .instructions-list li::before {
-    content: counter(step);
+  .template-farmhouse .instructions-list .step-num {
     position: absolute;
     left: 0;
-    top: 10px;
-    width: 30px;
-    height: 30px;
+    top: 8px;
+    width: 28px;
+    height: 28px;
     border: 2px solid #B5C4A8;
     border-radius: 50%;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     font-family: 'Caveat', cursive;
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     font-weight: 600;
     color: #5C6B52;
   }
@@ -953,22 +948,22 @@ import Layout from '../layouts/Layout.astro';
   .template-heirloom .ingredients-list li:last-child { border-bottom: none; }
   .template-heirloom .instructions-list {
     list-style: none;
-    counter-reset: step;
   }
   .template-heirloom .instructions-list li {
     padding: 8px 0;
     font-size: 0.9rem;
     color: #3C2F1E;
-    counter-increment: step;
     font-family: 'Lora', serif;
     line-height: 1.7;
   }
-  .template-heirloom .instructions-list li::before {
-    content: counter(step) '.';
+  .template-heirloom .instructions-list .step-num {
     color: #C8B280;
     font-weight: 700;
-    margin-right: 8px;
+    margin-right: 6px;
     font-family: 'Playfair Display', serif;
+  }
+  .template-heirloom .instructions-list .step-num::after {
+    content: '.';
   }
   .template-heirloom .card-notes {
     padding: 10px 0;
@@ -1123,7 +1118,11 @@ import Layout from '../layouts/Layout.astro';
     if (!currentRecipe) return;
     const r = currentRecipe;
     const ingredientsHtml = (r.ingredients || []).map(i => `<li>${i}</li>`).join('');
-    const instructionsHtml = (r.instructions || []).map(i => `<li>${i}</li>`).join('');
+    const instructionsHtml = (r.instructions || []).map((i, idx) => {
+      // Strip leading step numbers ("1.", "1)", "Step 1:", etc.)
+      const cleaned = i.replace(/^\s*(?:step\s*)?\d+[\.\)\:\-]\s*/i, '');
+      return `<li><span class="step-num">${idx + 1}</span>${cleaned}</li>`;
+    }).join('');
     const tipsHtml = r.tips ? `<div class="card-notes card-tips"><strong>Tips: </strong>${r.tips}</div>` : '';
     const notesHtml = r.notes ? `<div class="card-notes"><strong>Notes: </strong>${r.notes}</div>` : '';
 
@@ -1236,6 +1235,14 @@ import Layout from '../layouts/Layout.astro';
     const { domToPng } = await import('modern-screenshot');
     const scales = { '3x5': 3, '4x6': 3, '5x7': 2.5, 'full': 2 };
     const scale = scales[currentSize] || 2;
+    // Force card to actual inch width for capture (not constrained by viewport)
+    const widths = { '3x5': '5in', '4x6': '6in', '5x7': '7in', 'full': '800px' };
+    const origWidth = recipeCard.style.width;
+    const origMaxWidth = recipeCard.style.maxWidth;
+    recipeCard.style.width = widths[currentSize] || '800px';
+    recipeCard.style.maxWidth = 'none';
+    // Let layout recalculate
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
     try {
       const dataUrl = await domToPng(recipeCard, {
         scale,
@@ -1248,6 +1255,9 @@ import Layout from '../layouts/Layout.astro';
     } catch (err) {
       console.error('Download failed:', err);
       showError('Download failed — try Print instead.');
+    } finally {
+      recipeCard.style.width = origWidth;
+      recipeCard.style.maxWidth = origMaxWidth;
     }
   });
 

@@ -38,11 +38,15 @@ Return ONLY a valid JSON object with this exact structure, no other text:
   "cookTime": "30 mins",
   "servings": "4 servings (or yield info exactly as written)",
   "ingredients": ["7 cups granulated sugar", "8 cups whole strawberries (approx.)"],
-  "instructions": ["Full complete step one with ALL details, parenthetical notes, and sub-instructions exactly as written.", "Full complete step two..."],
+  "instructions": ["Full complete step one WITHOUT step numbers — do NOT include '1.' or 'Step 1' prefixes, just the instruction text with ALL details.", "Next step text..."],
   "tips": "Any tips, hints, or sidebar text from the recipe — transcribe in full",
   "notes": "Any additional notes verbatim from the recipe"
 }
-CRITICAL: Do NOT shorten or summarize instructions. Each step must be the COMPLETE text from the original. If a step is a full paragraph, return the full paragraph. If you cannot determine a field, use a reasonable default.`
+CRITICAL RULES:
+1. Do NOT shorten or summarize instructions. Each step must be the COMPLETE text from the original.
+2. Do NOT include step numbers in instructions — no "1.", "Step 1:", etc. The app adds numbers automatically.
+3. If a step is a full paragraph, return the full paragraph.
+4. If you cannot determine a field, use a reasonable default.`
               },
               {
                 type: 'image_url',
