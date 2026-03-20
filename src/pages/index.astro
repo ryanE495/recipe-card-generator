@@ -409,10 +409,10 @@ import Layout from '../layouts/Layout.astro';
      ======================================= */
   .recipe-card {
     background: white;
-    border-radius: 24px;
-    box-shadow: var(--card-shadow);
+    border-radius: 28px;
+    box-shadow: 0 12px 48px rgba(60,53,44,0.12), 0 4px 12px rgba(60,53,44,0.06);
     overflow: hidden;
-    max-width: 780px;
+    max-width: 800px;
     margin: 0 auto;
     position: relative;
   }
@@ -421,7 +421,7 @@ import Layout from '../layouts/Layout.astro';
   .template-classic .card-header {
     background: linear-gradient(160deg, var(--sage) 0%, var(--sage-dark) 100%);
     color: white;
-    padding: 44px 48px 36px;
+    padding: 52px 56px 40px;
     text-align: center;
     position: relative;
   }
@@ -466,7 +466,7 @@ import Layout from '../layouts/Layout.astro';
     color: var(--sage-dark);
     font-family: 'Playfair Display', serif;
   }
-  .template-classic .card-body { padding: 36px 48px 48px; }
+  .template-classic .card-body { padding: 44px 56px 56px; }
   .template-classic .section-title {
     font-size: 1.25rem;
     color: var(--sage-dark);
@@ -543,7 +543,7 @@ import Layout from '../layouts/Layout.astro';
   .template-modern .card-header {
     background: var(--dark);
     color: white;
-    padding: 48px 48px 36px;
+    padding: 52px 56px 40px;
     position: relative;
   }
   .template-modern .card-header::before {
@@ -584,7 +584,7 @@ import Layout from '../layouts/Layout.astro';
     font-size: 1.15rem;
     font-family: 'Playfair Display', serif;
   }
-  .template-modern .card-body { padding: 36px 48px 48px; }
+  .template-modern .card-body { padding: 44px 56px 56px; }
   .template-modern .section-title {
     font-size: 0.8rem;
     text-transform: uppercase;
@@ -642,7 +642,7 @@ import Layout from '../layouts/Layout.astro';
   /* ===== MINIMAL TEMPLATE ===== */
   .template-minimal { border: 1px solid var(--cream-dark); }
   .template-minimal .card-header {
-    padding: 44px 48px 12px;
+    padding: 48px 56px 12px;
   }
   .template-minimal .card-header h2 {
     font-size: 2.6rem;
@@ -658,7 +658,7 @@ import Layout from '../layouts/Layout.astro';
   .template-minimal .card-meta {
     display: flex;
     gap: 24px;
-    padding: 16px 48px;
+    padding: 16px 56px;
     font-size: 0.8rem;
     color: var(--warm-gray);
     flex-wrap: wrap;
@@ -668,7 +668,7 @@ import Layout from '../layouts/Layout.astro';
     margin-right: 4px;
   }
   .template-minimal .card-body {
-    padding: 24px 48px 48px;
+    padding: 28px 56px 56px;
     display: grid;
     grid-template-columns: 1fr 1.5fr;
     gap: 36px;
@@ -727,7 +727,7 @@ import Layout from '../layouts/Layout.astro';
     opacity: 0.4;
   }
   .template-farmhouse .card-header {
-    padding: 44px 48px 20px;
+    padding: 52px 56px 24px;
     text-align: center;
     position: relative;
   }
@@ -775,7 +775,7 @@ import Layout from '../layouts/Layout.astro';
     font-family: 'Caveat', cursive;
     font-size: 1.3rem;
   }
-  .template-farmhouse .card-body { padding: 28px 48px 48px; }
+  .template-farmhouse .card-body { padding: 36px 56px 60px; }
   .template-farmhouse .section-title {
     font-family: 'Caveat', cursive;
     font-size: 1.6rem;
@@ -795,9 +795,9 @@ import Layout from '../layouts/Layout.astro';
   .template-farmhouse .ingredients-list {
     list-style: none;
     columns: 2;
-    column-gap: 28px;
-    margin-bottom: 36px;
-    padding: 20px 24px;
+    column-gap: 32px;
+    margin-bottom: 40px;
+    padding: 24px 28px;
     background: rgba(255,255,255,0.5);
     border-radius: 16px;
     border: 1px dashed var(--sage-light);
