@@ -407,20 +407,19 @@ import Layout from '../layouts/Layout.astro';
   .size-5x7 { width: min(100%, 7in); }
   .size-full { width: 100%; max-width: 800px; }
 
-  /* Force two-column landscape layout on all sized cards */
-  .size-3x5 .card-body,
-  .size-4x6 .card-body,
-  .size-5x7 .card-body,
-  .size-full .card-body {
+  /* Two-column landscape layout */
+  .recipe-card .card-body {
     display: grid !important;
-    grid-template-columns: 1fr 1.5fr !important;
-    gap: 8px 20px !important;
+    grid-template-columns: 1fr 1.6fr !important;
+    gap: 4px 20px !important;
   }
-  .size-3x5 .card-notes,
-  .size-4x6 .card-notes,
-  .size-5x7 .card-notes,
-  .size-full .card-notes {
-    grid-column: 1 / -1 !important;
+  .card-col-left, .card-col-right {
+    min-width: 0;
+  }
+  .card-col-left .card-notes,
+  .card-col-left .card-tips {
+    margin-top: 12px;
+    font-size: 0.82rem;
   }
 
   /* Tighter spacing for smaller cards */
@@ -560,8 +559,7 @@ import Layout from '../layouts/Layout.astro';
     font-weight: 700;
   }
   .template-grandma .card-notes {
-    grid-column: 1 / -1;
-    margin-top: 4px;
+    margin-top: 8px;
     padding: 6px 10px;
     font-size: 0.95rem;
     color: #8B7355;
@@ -712,8 +710,7 @@ import Layout from '../layouts/Layout.astro';
     font-family: 'Playfair Display', serif;
   }
   .template-vintage .card-notes {
-    grid-column: 1 / -1;
-    margin-top: 8px;
+    margin-top: 10px;
     padding: 10px 16px;
     border: 1px solid #D8CAA8;
     border-radius: 4px;
@@ -862,8 +859,7 @@ import Layout from '../layouts/Layout.astro';
     color: #5C6B52;
   }
   .template-farmhouse .card-notes {
-    grid-column: 1 / -1;
-    margin-top: 8px;
+    margin-top: 10px;
     padding: 10px 16px;
     background: rgba(255,255,255,0.4);
     border: 1px solid #DDD2BE;
@@ -951,9 +947,6 @@ import Layout from '../layouts/Layout.astro';
   }
   .template-heirloom .card-body {
     padding: 16px 44px 32px;
-    display: grid;
-    grid-template-columns: 1fr 1.4fr;
-    gap: 32px;
   }
   .template-heirloom .section-title {
     font-size: 1rem;
@@ -965,8 +958,6 @@ import Layout from '../layouts/Layout.astro';
   }
   .template-heirloom .ingredients-list {
     list-style: none;
-    border-right: 1px solid #E8DCC8;
-    padding-right: 24px;
   }
   .template-heirloom .ingredients-list li {
     padding: 6px 0;
@@ -996,8 +987,7 @@ import Layout from '../layouts/Layout.astro';
     font-family: 'Playfair Display', serif;
   }
   .template-heirloom .card-notes {
-    grid-column: 1 / -1;
-    padding: 16px 0;
+    padding: 10px 0;
     border-top: 1px solid #E8DCC8;
     font-size: 0.85rem;
     color: #8B7D68;
@@ -1027,9 +1017,7 @@ import Layout from '../layouts/Layout.astro';
     .template-heirloom .card-meta { padding-left: 28px; padding-right: 28px; }
     .template-heirloom .card-body {
       padding: 20px 28px 36px;
-      grid-template-columns: 1fr;
     }
-    .template-heirloom .ingredients-list { border-right: none; padding-right: 0; border-bottom: 1px solid #E8DCC8; padding-bottom: 16px; }
   }
 
   @media print {
@@ -1155,11 +1143,18 @@ import Layout from '../layouts/Layout.astro';
     const tipsHtml = r.tips ? `<div class="card-notes card-tips"><strong>Tips: </strong>${r.tips}</div>` : '';
     const notesHtml = r.notes ? `<div class="card-notes"><strong>Notes: </strong>${r.notes}</div>` : '';
 
-    // All templates use two-column layout for landscape note card feel
+    // Two-column landscape: left = ingredients + tips/notes, right = instructions
+    const leftExtras = [tipsHtml, notesHtml].filter(Boolean).join('');
     const bodyContent = `
-      <div><h3 class="section-title">Ingredients</h3><ul class="ingredients-list">${ingredientsHtml}</ul></div>
-      <div><h3 class="section-title">Instructions</h3><ol class="instructions-list">${instructionsHtml}</ol></div>
-      ${tipsHtml}${notesHtml}`;
+      <div class="card-col-left">
+        <h3 class="section-title">Ingredients</h3>
+        <ul class="ingredients-list">${ingredientsHtml}</ul>
+        ${leftExtras}
+      </div>
+      <div class="card-col-right">
+        <h3 class="section-title">Instructions</h3>
+        <ol class="instructions-list">${instructionsHtml}</ol>
+      </div>`;
 
     recipeCard.className = `recipe-card template-${currentTemplate} size-${currentSize} fade-up`;
     recipeCard.innerHTML = `
@@ -1198,29 +1193,35 @@ import Layout from '../layouts/Layout.astro';
 
   // Actions
   $('#print-btn').addEventListener('click', () => {
-    // Scale card to fit one page
+    // Measure card and compute scale to fit one landscape page
     const card = recipeCard;
-    const cardHeight = card.scrollHeight;
-    const cardWidth = card.scrollWidth;
-    // Landscape page ~9.5in x 7in printable at 96dpi
-    const pageWidth = 9.5 * 96;
-    const pageHeight = 7 * 96;
-    const scaleX = pageWidth / cardWidth;
-    const scaleY = pageHeight / cardHeight;
-    const scale = Math.min(scaleX, scaleY, 1); // don't scale up, only down
+    const rect = card.getBoundingClientRect();
+    // Landscape printable area ~9.5in x 7in at 96dpi
+    const pw = 9.5 * 96;
+    const ph = 7 * 96;
+    const scale = Math.min(pw / rect.width, ph / rect.height, 1);
     
-    card.style.transform = `scale(${scale})`;
-    card.style.transformOrigin = 'top left';
-    card.style.width = `${cardWidth}px`;
+    // Inject print-specific style
+    const style = document.createElement('style');
+    style.id = 'print-scale';
+    style.textContent = `
+      @media print {
+        #recipe-card {
+          transform: scale(${scale}) !important;
+          transform-origin: top center !important;
+          margin: 0 auto !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
     
     window.print();
     
-    // Reset after print
+    // Cleanup
     setTimeout(() => {
-      card.style.transform = '';
-      card.style.transformOrigin = '';
-      card.style.width = '';
-    }, 500);
+      const s = document.getElementById('print-scale');
+      if (s) s.remove();
+    }, 1000);
   });
 
   $('#download-btn').addEventListener('click', async () => {
