@@ -415,6 +415,12 @@ import Layout from '../layouts/Layout.astro';
   }
   .card-col-left, .card-col-right {
     min-width: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .recipe-card .card-meta {
+    position: relative;
+    z-index: 1;
   }
   .card-col-left .card-notes,
   .card-col-left .card-tips {
@@ -427,7 +433,7 @@ import Layout from '../layouts/Layout.astro';
   .size-3x5 .card-meta { padding-top: 4px !important; padding-bottom: 4px !important; }
   .size-3x5 .card-body { padding: 6px 16px 14px 16px !important; font-size: 0.8rem; }
   .size-3x5.template-grandma .card-body { padding-left: 44px !important; }
-  .size-3x5.template-grandma::after { left: 36px; }
+  .size-3x5.template-grandma .decor-margin { left: 36px; }
   .size-3x5.template-grandma .card-header,
   .size-3x5.template-grandma .card-meta { padding-left: 44px !important; }
   .size-3x5 .card-header h2 { font-size: 1.4rem !important; }
@@ -453,8 +459,7 @@ import Layout from '../layouts/Layout.astro';
     border: 1px solid #E8DCBE;
     font-family: 'Caveat', cursive;
   }
-  .template-grandma::before {
-    content: '';
+  .template-grandma .decor-lines {
     position: absolute;
     inset: 0;
     background:
@@ -462,20 +467,19 @@ import Layout from '../layouts/Layout.astro';
         0deg,
         transparent,
         transparent 27px,
-        rgba(140,180,220,0.15) 27px,
-        rgba(140,180,220,0.15) 28px
+        rgba(140,180,220,0.18) 27px,
+        rgba(140,180,220,0.18) 28px
       );
     pointer-events: none;
     z-index: 0;
   }
-  .template-grandma::after {
-    content: '';
+  .template-grandma .decor-margin {
     position: absolute;
     top: 0;
     left: 48px;
     bottom: 0;
-    width: 1.5px;
-    background: rgba(220,120,120,0.25);
+    width: 2px;
+    background: rgba(220,120,120,0.3);
     pointer-events: none;
     z-index: 0;
   }
@@ -580,25 +584,25 @@ import Layout from '../layouts/Layout.astro';
     position: relative;
     font-family: 'Lora', serif;
   }
-  .template-vintage::before {
-    content: '';
+  .template-vintage .decor-inner-border {
     position: absolute;
     inset: 8px;
     border: 1px solid #D8CAA8;
     border-radius: 2px;
     pointer-events: none;
+    z-index: 0;
   }
   .template-vintage .card-header {
-    padding: 28px 40px 12px;
+    padding: 28px 40px 8px;
     text-align: center;
     position: relative;
+    z-index: 1;
   }
-  .template-vintage .card-header::after {
-    content: '❦';
-    display: block;
+  .template-vintage .decor-fleuron {
     font-size: 1.4rem;
     color: #C8B896;
-    margin-top: 12px;
+    margin-top: 10px;
+    text-align: center;
   }
   .template-vintage .card-header h2 {
     font-family: 'Playfair Display', serif;
@@ -636,9 +640,8 @@ import Layout from '../layouts/Layout.astro';
   }
   .template-vintage .card-body {
     padding: 16px 40px 32px;
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 12px 24px;
+    position: relative;
+    z-index: 1;
   }
   .template-vintage .section-title {
     font-family: 'Playfair Display', serif;
@@ -650,14 +653,8 @@ import Layout from '../layouts/Layout.astro';
     margin-bottom: 10px;
     text-align: center;
     position: relative;
-  }
-  .template-vintage .section-title::after {
-    content: '';
-    display: block;
-    width: 50px;
-    height: 1px;
-    background: #C8B896;
-    margin: 8px auto 0;
+    border-bottom: 1px solid #C8B896;
+    padding-bottom: 8px;
   }
   .template-vintage .ingredients-list {
     list-style: none;
@@ -731,25 +728,26 @@ import Layout from '../layouts/Layout.astro';
     position: relative;
     font-family: 'Lora', serif;
   }
-  .template-farmhouse::before {
-    content: '';
+  .template-farmhouse .decor-inner-border {
     position: absolute;
     inset: 7px;
-    border: 1px solid rgba(180,165,130,0.3);
+    border: 1px solid rgba(180,165,130,0.35);
     border-radius: 10px;
     pointer-events: none;
+    z-index: 0;
   }
   .template-farmhouse .card-header {
-    padding: 24px 40px 10px;
+    padding: 24px 40px 6px;
     text-align: center;
+    position: relative;
+    z-index: 1;
   }
-  .template-farmhouse .card-header::after {
-    content: '— 🌿 —';
-    display: block;
-    margin-top: 14px;
+  .template-farmhouse .decor-divider {
     color: #B5A882;
     font-size: 0.9rem;
     letter-spacing: 6px;
+    text-align: center;
+    margin-top: 10px;
   }
   .template-farmhouse .card-header h2 {
     font-family: 'Caveat', cursive;
@@ -787,9 +785,8 @@ import Layout from '../layouts/Layout.astro';
   }
   .template-farmhouse .card-body {
     padding: 16px 40px 32px;
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 12px 24px;
+    position: relative;
+    z-index: 1;
   }
   .template-farmhouse .section-title {
     font-family: 'Caveat', cursive;
@@ -797,14 +794,8 @@ import Layout from '../layouts/Layout.astro';
     color: #5C6B52;
     margin-bottom: 8px;
     text-align: center;
-  }
-  .template-farmhouse .section-title::after {
-    content: '';
-    display: block;
-    width: 50px;
-    height: 2px;
-    background: #B5C4A8;
-    margin: 6px auto 0;
+    border-bottom: 2px solid #B5C4A8;
+    padding-bottom: 6px;
   }
   .template-farmhouse .ingredients-list {
     list-style: none;
@@ -880,38 +871,31 @@ import Layout from '../layouts/Layout.astro';
     position: relative;
     font-family: 'Playfair Display', serif;
   }
-  .template-heirloom::before {
-    content: '';
+  .template-heirloom .decor-crosshatch {
     position: absolute;
     inset: 0;
-    border: 12px solid transparent;
-    border-image: repeating-linear-gradient(
-      45deg,
-      #D4C5A0 0px, #D4C5A0 2px,
-      transparent 2px, transparent 8px
-    ) 12;
+    border: 10px solid #D4C5A0;
     pointer-events: none;
+    z-index: 0;
   }
   .template-heirloom .card-header {
-    padding: 28px 44px 12px;
+    padding: 24px 44px 8px;
     text-align: center;
     position: relative;
+    z-index: 1;
   }
-  .template-heirloom .card-header::before {
-    content: '✦ ✦ ✦';
-    display: block;
+  .template-heirloom .decor-stars {
     color: #C8B280;
     font-size: 0.7rem;
     letter-spacing: 8px;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
+    text-align: center;
   }
-  .template-heirloom .card-header::after {
-    content: '';
-    display: block;
+  .template-heirloom .decor-line {
     width: 80px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, #C8B280, transparent);
-    margin: 16px auto 0;
+    background: #C8B280;
+    margin: 12px auto 0;
   }
   .template-heirloom .card-header h2 {
     font-size: 2.2rem;
@@ -1006,7 +990,7 @@ import Layout from '../layouts/Layout.astro';
     .template-grandma .card-header,
     .template-grandma .card-body,
     .template-grandma .card-meta { padding-left: 48px; padding-right: 24px; }
-    .template-grandma::after { left: 36px; }
+    .template-grandma .decor-margin { left: 36px; }
     .template-vintage .card-header,
     .template-vintage .card-body { padding-left: 28px; padding-right: 28px; }
     .template-vintage .ingredients-list { columns: 1; }
@@ -1157,10 +1141,34 @@ import Layout from '../layouts/Layout.astro';
       </div>`;
 
     recipeCard.className = `recipe-card template-${currentTemplate} size-${currentSize} fade-up`;
+
+    // Template-specific decorative elements as real DOM (not pseudo-elements)
+    let decorTop = '';
+    let decorHeader = '';
+    let decorBorder = '';
+    
+    if (currentTemplate === 'grandma') {
+      decorTop = `<div class="decor-lines" aria-hidden="true"></div><div class="decor-margin" aria-hidden="true"></div>`;
+    } else if (currentTemplate === 'vintage') {
+      decorBorder = `<div class="decor-inner-border" aria-hidden="true"></div>`;
+      decorHeader = `<div class="decor-fleuron" aria-hidden="true">❦</div>`;
+    } else if (currentTemplate === 'farmhouse') {
+      decorBorder = `<div class="decor-inner-border" aria-hidden="true"></div>`;
+      decorHeader = `<div class="decor-divider" aria-hidden="true">— 🌿 —</div>`;
+    } else if (currentTemplate === 'heirloom') {
+      decorBorder = `<div class="decor-crosshatch" aria-hidden="true"></div>`;
+      decorHeader = `<div class="decor-stars" aria-hidden="true">✦ ✦ ✦</div><div class="decor-line" aria-hidden="true"></div>`;
+    }
+
     recipeCard.innerHTML = `
+      ${decorTop}${decorBorder}
       <div class="card-header">
+        ${currentTemplate === 'heirloom' ? decorHeader.split('</div>')[0] + '</div>' : ''}
         <h2>${r.title || 'Untitled Recipe'}</h2>
         ${r.description ? `<p class="desc">${r.description}</p>` : ''}
+        ${currentTemplate === 'heirloom' ? '<div class="decor-line" aria-hidden="true"></div>' : ''}
+        ${currentTemplate === 'vintage' ? decorHeader : ''}
+        ${currentTemplate === 'farmhouse' ? decorHeader : ''}
       </div>
       <div class="card-meta">
         <div class="meta-item"><strong>${r.prepTime || '—'}</strong> Prep</div>
