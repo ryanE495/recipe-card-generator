@@ -10,37 +10,59 @@ const { title } = Astro.props;
   <title>{title}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style is:global>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --sage: #8B9D83;
-      --sage-light: #C5D1BE;
-      --sage-dark: #6B7D63;
-      --terracotta: #C4826D;
-      --terracotta-light: #E8B4A2;
-      --cream: #FBF8F4;
-      --warm-white: #FEFCF9;
-      --warm-gray: #8A8580;
-      --dark: #3D3832;
-      --card-shadow: 0 4px 24px rgba(61, 56, 50, 0.08);
+      --sage: #7A8B6F;
+      --sage-light: #B5C4A8;
+      --sage-dark: #5C6B52;
+      --sage-muted: #D4DEC9;
+      --terracotta: #C07856;
+      --terracotta-light: #DDA88E;
+      --terracotta-dark: #A05E3E;
+      --cream: #FAF6F0;
+      --cream-dark: #F0E8DB;
+      --warm-white: #FEFBF6;
+      --warm-gray: #8A7F74;
+      --dark: #3C352C;
+      --dark-soft: #5A5145;
+      --linen: #F5EEE4;
+      --parchment: #F8F2E8;
+      --gold: #C9A84C;
+      --gold-light: #E4D5A0;
+      --card-shadow: 0 8px 40px rgba(60, 53, 44, 0.1), 0 2px 8px rgba(60, 53, 44, 0.06);
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Lora', serif;
       background: var(--cream);
       color: var(--dark);
-      line-height: 1.6;
+      line-height: 1.7;
       -webkit-font-smoothing: antialiased;
+      background-image:
+        radial-gradient(circle at 20% 50%, rgba(122,139,111,0.04) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(192,120,86,0.04) 0%, transparent 50%),
+        radial-gradient(circle at 50% 80%, rgba(201,168,76,0.03) 0%, transparent 50%);
     }
-    h1, h2, h3 { font-family: 'Playfair Display', serif; }
-    .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+    h1, h2, h3, h4 { font-family: 'Playfair Display', serif; font-weight: 600; }
+    .container { max-width: 920px; margin: 0 auto; padding: 0 24px; }
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(24px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .fade-up { animation: fadeUp 0.6s ease forwards; }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .fade-up { animation: fadeUp 0.7s ease forwards; }
+    .fade-in { animation: fadeIn 0.5s ease forwards; }
     @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    ::selection { background: var(--sage-muted); color: var(--dark); }
     @media print {
       .no-print { display: none !important; }
       body { background: white; }
