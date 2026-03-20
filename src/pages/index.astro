@@ -1,26 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
 ---
-<Layout title="Recipe Cards — Beautiful Cards from Any Recipe Photo">
+<Layout title="Recipe Cards — Beautiful Vintage Cards from Any Recipe Photo">
   <div class="no-print">
     <header>
       <div class="container">
-        <div class="header-flourish">
-          <svg class="flourish-svg" viewBox="0 0 200 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 10 Q50 0 100 10 Q150 20 200 10" stroke="currentColor" stroke-width="1" fill="none" opacity="0.3"/>
-          </svg>
-        </div>
+        <div class="header-ornament">✿ ✿ ✿</div>
         <div class="logo">
-          <div class="logo-badge">
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" stroke="currentColor" stroke-width="1"/><circle cx="24" cy="24" r="19" stroke="currentColor" stroke-width="0.5" opacity="0.4"/><text x="24" y="30" text-anchor="middle" font-size="22">🍽</text></svg>
-          </div>
           <h1>Recipe Cards</h1>
-          <p class="tagline">Upload a recipe photo &middot; get a beautiful keepsake card</p>
-        </div>
-        <div class="header-flourish bottom">
-          <svg class="flourish-svg" viewBox="0 0 200 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 10 Q50 20 100 10 Q150 0 200 10" stroke="currentColor" stroke-width="1" fill="none" opacity="0.3"/>
-          </svg>
+          <div class="tagline-wrap">
+            <span class="tagline-line"></span>
+            <p class="tagline">from photo to keepsake</p>
+            <span class="tagline-line"></span>
+          </div>
         </div>
       </div>
     </header>
@@ -30,12 +22,9 @@ import Layout from '../layouts/Layout.astro';
         <div id="drop-zone" class="drop-zone">
           <div class="drop-zone-border"></div>
           <div class="drop-zone-content">
-            <div class="upload-icon-wrap">
-              <div class="upload-icon">📸</div>
-              <div class="icon-ring"></div>
-            </div>
-            <h2>Drop your recipe here</h2>
-            <p>Handwritten cards, cookbook pages, screenshots — anything goes</p>
+            <div class="upload-icon">📸</div>
+            <h2>Drop your recipe photo here</h2>
+            <p>Handwritten cards, cookbook pages, screenshots — anything!</p>
             <div class="upload-hint">
               <span class="hint-line"></span>
               <span>or click to browse</span>
@@ -49,15 +38,12 @@ import Layout from '../layouts/Layout.astro';
           </div>
         </div>
         <button id="extract-btn" class="btn-primary" style="display:none;">
-          <span class="btn-text">
-            <span class="btn-icon">✨</span> Extract Recipe
-          </span>
+          <span class="btn-text">✨ Extract Recipe</span>
           <span class="btn-loading" style="display:none;">
             <span class="spinner"></span> Reading your recipe...
           </span>
         </button>
       </section>
-
       <div id="error-msg" class="error-msg" style="display:none;"></div>
     </main>
   </div>
@@ -65,38 +51,35 @@ import Layout from '../layouts/Layout.astro';
   <!-- Recipe Card Output -->
   <section id="card-section" class="container" style="display:none;">
     <div class="no-print card-controls fade-up">
-      <div class="controls-header">
-        <div class="controls-flourish">
-          <span class="flourish-leaf">🌿</span>
+      <h2>Your Recipe Card</h2>
+      <div class="pickers-row">
+        <div class="picker-group">
+          <label>Style</label>
+          <div class="template-picker">
+            <button class="tmpl-btn active" data-template="grandma">Grandma's</button>
+            <button class="tmpl-btn" data-template="vintage">Vintage</button>
+            <button class="tmpl-btn" data-template="farmhouse">Farmhouse</button>
+            <button class="tmpl-btn" data-template="heirloom">Heirloom</button>
+          </div>
         </div>
-        <h2>Your Recipe Card</h2>
-      </div>
-      <div class="template-picker">
-        <button class="tmpl-btn active" data-template="classic">
-          <span class="tmpl-icon">📜</span> Classic
-        </button>
-        <button class="tmpl-btn" data-template="modern">
-          <span class="tmpl-icon">✦</span> Modern
-        </button>
-        <button class="tmpl-btn" data-template="minimal">
-          <span class="tmpl-icon">〇</span> Minimal
-        </button>
-        <button class="tmpl-btn" data-template="farmhouse">
-          <span class="tmpl-icon">🌾</span> Farmhouse
-        </button>
+        <div class="picker-group">
+          <label>Size</label>
+          <div class="size-picker">
+            <button class="size-btn" data-size="3x5">3×5</button>
+            <button class="size-btn" data-size="4x6">4×6</button>
+            <button class="size-btn active" data-size="5x7">5×7</button>
+            <button class="size-btn" data-size="full">Full</button>
+          </div>
+        </div>
       </div>
     </div>
-    <div id="recipe-card" class="recipe-card template-classic fade-up"></div>
+    <div class="card-wrapper">
+      <div id="recipe-card" class="recipe-card template-grandma size-5x7 fade-up"></div>
+    </div>
     <div class="no-print action-bar fade-up">
-      <button id="print-btn" class="btn-action">
-        <span>🖨</span> Print
-      </button>
-      <button id="download-btn" class="btn-action">
-        <span>📥</span> Download
-      </button>
-      <button id="email-btn" class="btn-action">
-        <span>✉️</span> Email HTML
-      </button>
+      <button id="print-btn" class="btn-action">🖨 Print</button>
+      <button id="download-btn" class="btn-action">📥 Download Image</button>
+      <button id="email-btn" class="btn-action">✉️ Copy Email HTML</button>
       <button id="new-btn" class="btn-new">+ New Recipe</button>
     </div>
   </section>
@@ -112,15 +95,10 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </div>
 
-  <!-- Decorative footer -->
   <footer class="no-print">
     <div class="container">
-      <div class="footer-flourish">
-        <svg viewBox="0 0 300 30" fill="none" class="footer-svg">
-          <path d="M0 15 Q75 0 150 15 Q225 30 300 15" stroke="currentColor" stroke-width="0.8" fill="none" opacity="0.2"/>
-        </svg>
-      </div>
-      <p class="footer-text">Made with care ✨</p>
+      <div class="footer-ornament">✿</div>
+      <p class="footer-text">Made with love ✨</p>
     </div>
   </footer>
 
@@ -128,47 +106,44 @@ import Layout from '../layouts/Layout.astro';
   /* ===== HEADER ===== */
   header {
     text-align: center;
-    padding: 56px 0 40px;
-    position: relative;
+    padding: 52px 0 36px;
   }
-  .header-flourish {
-    color: var(--sage);
-    margin-bottom: 16px;
-  }
-  .header-flourish.bottom {
-    margin-top: 20px;
-    margin-bottom: 0;
-  }
-  .flourish-svg {
-    width: 200px;
-    height: 20px;
-    display: inline-block;
-  }
-  .logo-badge {
-    color: var(--sage);
+  .header-ornament {
+    font-size: 0.9rem;
+    letter-spacing: 12px;
+    color: var(--sage-light);
     margin-bottom: 12px;
-    display: inline-block;
-    animation: float 4s ease-in-out infinite;
   }
   .logo h1 {
-    font-size: 3rem;
+    font-size: 3.2rem;
     color: var(--dark);
-    margin: 0 0 8px;
     font-weight: 700;
+    font-family: 'Playfair Display', serif;
     letter-spacing: -0.5px;
+  }
+  .tagline-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 8px;
   }
   .tagline {
     color: var(--warm-gray);
-    font-size: 1.05rem;
-    font-family: 'Lora', serif;
-    font-style: italic;
-    font-weight: 400;
+    font-size: 1rem;
+    font-family: 'Caveat', cursive;
+    font-size: 1.3rem;
+  }
+  .tagline-line {
+    width: 50px;
+    height: 1px;
+    background: var(--sage-light);
   }
 
   /* ===== UPLOAD ===== */
   .drop-zone {
-    border-radius: 24px;
-    padding: 64px 32px;
+    border-radius: 20px;
+    padding: 60px 32px;
     text-align: center;
     cursor: pointer;
     transition: var(--transition);
@@ -180,72 +155,44 @@ import Layout from '../layouts/Layout.astro';
     position: absolute;
     inset: 8px;
     border: 2px dashed var(--sage-light);
-    border-radius: 18px;
+    border-radius: 14px;
     pointer-events: none;
     transition: var(--transition);
   }
   .drop-zone:hover .drop-zone-border,
   .drop-zone.drag-over .drop-zone-border {
     border-color: var(--sage);
-    inset: 6px;
+    inset: 5px;
   }
   .drop-zone:hover, .drop-zone.drag-over {
     background: var(--parchment);
-    transform: scale(1.005);
     box-shadow: 0 8px 32px rgba(60,53,44,0.08);
   }
-  .upload-icon-wrap {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 16px;
-  }
-  .upload-icon {
-    font-size: 3.2rem;
-    position: relative;
-    z-index: 1;
-  }
-  .icon-ring {
-    position: absolute;
-    inset: -12px;
-    border: 1.5px solid var(--sage-light);
-    border-radius: 50%;
-    opacity: 0.5;
-  }
+  .upload-icon { font-size: 3rem; margin-bottom: 14px; }
   .drop-zone h2 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     margin-bottom: 8px;
     color: var(--dark);
-    font-weight: 600;
+    font-family: 'Playfair Display', serif;
   }
-  .drop-zone p {
-    color: var(--warm-gray);
-    font-size: 0.95rem;
-    margin-bottom: 20px;
-  }
+  .drop-zone p { color: var(--warm-gray); font-size: 0.95rem; margin-bottom: 20px; }
   .upload-hint {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 16px;
+    gap: 14px;
     color: var(--warm-gray);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-family: 'Inter', sans-serif;
     text-transform: uppercase;
     letter-spacing: 1.5px;
   }
-  .hint-line {
-    width: 40px;
-    height: 1px;
-    background: var(--sage-light);
-  }
-  .preview-container {
-    position: relative;
-    display: inline-block;
-  }
+  .hint-line { width: 36px; height: 1px; background: var(--sage-light); }
+  .preview-container { position: relative; display: inline-block; }
   .preview-container img {
     max-width: 100%;
-    max-height: 380px;
-    border-radius: 16px;
+    max-height: 360px;
+    border-radius: 14px;
     object-fit: contain;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
   }
@@ -253,8 +200,8 @@ import Layout from '../layouts/Layout.astro';
     position: absolute;
     top: 10px;
     right: 10px;
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     border: none;
     background: rgba(60,53,44,0.7);
@@ -264,7 +211,7 @@ import Layout from '../layouts/Layout.astro';
     display: flex;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(6px);
     transition: var(--transition);
   }
   .btn-remove:hover { background: rgba(60,53,44,0.9); transform: scale(1.1); }
@@ -272,70 +219,52 @@ import Layout from '../layouts/Layout.astro';
   /* ===== BUTTONS ===== */
   .btn-primary {
     display: block;
-    margin: 28px auto 0;
-    padding: 18px 48px;
+    margin: 24px auto 0;
+    padding: 16px 44px;
     background: var(--sage);
     color: white;
     border: none;
     border-radius: 60px;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 500;
     cursor: pointer;
     transition: var(--transition);
     font-family: 'Lora', serif;
-    position: relative;
-    overflow: hidden;
   }
-  .btn-primary::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
-    transform: translateX(-100%);
-    transition: transform 0.6s;
-  }
-  .btn-primary:hover::before { transform: translateX(100%); }
   .btn-primary:hover {
     background: var(--sage-dark);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 28px rgba(122,139,111,0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(122,139,111,0.3);
   }
   .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-  .btn-icon { margin-right: 4px; }
-
   .btn-action {
-    padding: 14px 28px;
+    padding: 12px 24px;
     background: var(--warm-white);
     border: 1.5px solid var(--cream-dark);
     border-radius: 60px;
     color: var(--dark);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     cursor: pointer;
     transition: var(--transition);
     font-family: 'Lora', serif;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
   }
   .btn-action:hover {
     border-color: var(--sage);
     background: var(--parchment);
     transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
   }
   .btn-new {
-    padding: 14px 28px;
+    padding: 12px 24px;
     background: transparent;
     border: 1.5px solid var(--terracotta-light);
     border-radius: 60px;
     color: var(--terracotta);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     cursor: pointer;
     transition: var(--transition);
     font-family: 'Lora', serif;
   }
-  .btn-new:hover { background: var(--terracotta); color: white; transform: translateY(-2px); }
-
+  .btn-new:hover { background: var(--terracotta); color: white; }
   .spinner {
     display: inline-block;
     width: 18px;
@@ -351,531 +280,75 @@ import Layout from '../layouts/Layout.astro';
     background: #FEF2F2;
     border: 1px solid #FECACA;
     color: #B91C1C;
-    padding: 16px 24px;
-    border-radius: 16px;
-    margin-top: 24px;
+    padding: 14px 20px;
+    border-radius: 14px;
+    margin-top: 20px;
     text-align: center;
     font-size: 0.95rem;
   }
 
   /* ===== CARD CONTROLS ===== */
   .card-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 56px 0 24px;
-    flex-wrap: wrap;
-    gap: 16px;
+    margin: 52px 0 24px;
+    text-align: center;
   }
-  .controls-header { display: flex; align-items: center; gap: 12px; }
-  .controls-flourish { font-size: 1.2rem; opacity: 0.6; }
-  .card-controls h2 { font-size: 1.6rem; }
-  .template-picker { display: flex; gap: 8px; flex-wrap: wrap; }
-  .tmpl-btn {
-    padding: 10px 22px;
+  .card-controls h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    font-family: 'Playfair Display', serif;
+  }
+  .pickers-row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .picker-group label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--warm-gray);
+    margin-bottom: 8px;
+    font-family: 'Inter', sans-serif;
+  }
+  .template-picker, .size-picker { display: flex; gap: 6px; }
+  .tmpl-btn, .size-btn {
+    padding: 8px 18px;
     border-radius: 60px;
     border: 1.5px solid var(--cream-dark);
     background: var(--warm-white);
     color: var(--dark-soft);
     cursor: pointer;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-family: 'Lora', serif;
     transition: var(--transition);
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
   }
-  .tmpl-icon { font-size: 0.9rem; }
-  .tmpl-btn.active, .tmpl-btn:hover {
+  .tmpl-btn.active, .tmpl-btn:hover,
+  .size-btn.active, .size-btn:hover {
     background: var(--sage);
     color: white;
     border-color: var(--sage);
-    box-shadow: 0 2px 12px rgba(122,139,111,0.2);
   }
+
+  .card-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 8px 0;
+  }
+
   .action-bar {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     justify-content: center;
     flex-wrap: wrap;
-    margin: 32px 0 60px;
-  }
-
-</style>
-
-<style is:global>
-  /* =======================================
-     RECIPE CARD BASE — must be global because
-     card HTML is injected via JS innerHTML
-     ======================================= */
-  .recipe-card {
-    background: white;
-    border-radius: 28px;
-    box-shadow: 0 12px 48px rgba(60,53,44,0.12), 0 4px 12px rgba(60,53,44,0.06);
-    overflow: hidden;
-    max-width: 800px;
-    margin: 0 auto;
-    position: relative;
-  }
-
-  /* ===== CLASSIC TEMPLATE ===== */
-  .template-classic .card-header {
-    background: linear-gradient(160deg, var(--sage) 0%, var(--sage-dark) 100%);
-    color: white;
-    padding: 52px 56px 40px;
-    text-align: center;
-    position: relative;
-  }
-  .template-classic .card-header::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 6px;
-    background: repeating-linear-gradient(90deg, var(--gold) 0px, var(--gold) 20px, transparent 20px, transparent 40px);
-    opacity: 0.4;
-  }
-  .template-classic .card-header h2 {
-    font-size: 2.2rem;
-    margin-bottom: 8px;
-    font-weight: 700;
-  }
-  .template-classic .card-header .desc {
-    font-style: italic;
-    opacity: 0.9;
-    font-family: 'Lora', serif;
-    font-size: 1rem;
-  }
-  .template-classic .card-meta {
-    display: flex;
-    justify-content: center;
-    gap: 36px;
-    padding: 20px 24px;
-    background: var(--parchment);
-    border-bottom: 1px solid var(--cream-dark);
-    flex-wrap: wrap;
-  }
-  .template-classic .meta-item {
-    text-align: center;
-    font-size: 0.85rem;
-    color: var(--warm-gray);
-  }
-  .template-classic .meta-item strong {
-    display: block;
-    font-size: 1.1rem;
-    color: var(--sage-dark);
-    font-family: 'Playfair Display', serif;
-  }
-  .template-classic .card-body { padding: 44px 56px 56px; }
-  .template-classic .section-title {
-    font-size: 1.25rem;
-    color: var(--sage-dark);
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--sage-muted);
-    display: inline-block;
-    position: relative;
-  }
-  .template-classic .ingredients-list {
-    list-style: none;
-    columns: 2;
-    column-gap: 28px;
-    margin-bottom: 36px;
-  }
-  .template-classic .ingredients-list li {
-    padding: 6px 0 6px 24px;
-    position: relative;
-    break-inside: avoid;
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
-  .template-classic .ingredients-list li::before {
-    content: '✦';
-    position: absolute;
-    left: 2px;
-    color: var(--terracotta-light);
-    font-size: 0.7rem;
-    top: 10px;
-  }
-  .template-classic .instructions-list {
-    list-style: none;
-    counter-reset: step;
-  }
-  .template-classic .instructions-list li {
-    padding: 14px 0 14px 52px;
-    position: relative;
-    border-bottom: 1px solid var(--linen);
-    font-size: 0.95rem;
-    counter-increment: step;
-    line-height: 1.7;
-  }
-  .template-classic .instructions-list li:last-child { border-bottom: none; }
-  .template-classic .instructions-list li::before {
-    content: counter(step);
-    position: absolute;
-    left: 0;
-    top: 12px;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background: var(--sage-muted);
-    color: var(--sage-dark);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 0.85rem;
-    font-family: 'Playfair Display', serif;
-  }
-  .template-classic .card-notes {
-    margin-top: 28px;
-    padding: 18px 24px;
-    background: linear-gradient(135deg, #FFF8F0 0%, #FEF3E8 100%);
-    border-left: 3px solid var(--terracotta-light);
-    border-radius: 0 14px 14px 0;
-    font-size: 0.9rem;
-    color: var(--dark-soft);
-    font-style: italic;
-  }
-  .template-classic .card-notes strong { color: var(--terracotta); font-style: normal; }
-
-  /* ===== MODERN TEMPLATE ===== */
-  .template-modern .card-header {
-    background: var(--dark);
-    color: white;
-    padding: 52px 56px 40px;
-    position: relative;
-  }
-  .template-modern .card-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--terracotta), var(--gold), var(--sage));
-  }
-  .template-modern .card-header h2 {
-    font-size: 2.4rem;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-  }
-  .template-modern .card-header .desc {
-    color: rgba(255,255,255,0.6);
-    margin-top: 8px;
-    font-weight: 400;
-    font-family: 'Lora', serif;
-  }
-  .template-modern .card-meta {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    background: var(--terracotta);
-    color: white;
-    text-align: center;
-  }
-  .template-modern .meta-item {
-    padding: 16px 12px;
-    border-right: 1px solid rgba(255,255,255,0.15);
-    font-size: 0.85rem;
-  }
-  .template-modern .meta-item:last-child { border-right: none; }
-  .template-modern .meta-item strong {
-    display: block;
-    font-size: 1.15rem;
-    font-family: 'Playfair Display', serif;
-  }
-  .template-modern .card-body { padding: 44px 56px 56px; }
-  .template-modern .section-title {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    color: var(--terracotta);
-    margin-bottom: 18px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-  }
-  .template-modern .ingredients-list {
-    list-style: none;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 36px;
-  }
-  .template-modern .ingredients-list li {
-    padding: 10px 16px;
-    background: var(--linen);
-    border-radius: 10px;
-    font-size: 0.9rem;
-  }
-  .template-modern .instructions-list {
-    list-style: none;
-    counter-reset: step;
-  }
-  .template-modern .instructions-list li {
-    padding: 14px 0 14px 56px;
-    position: relative;
-    font-size: 0.95rem;
-    counter-increment: step;
-    line-height: 1.7;
-    border-bottom: 1px solid var(--linen);
-  }
-  .template-modern .instructions-list li:last-child { border-bottom: none; }
-  .template-modern .instructions-list li::before {
-    content: '0' counter(step);
-    position: absolute;
-    left: 0;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--terracotta-light);
-  }
-  .template-modern .card-notes {
-    margin-top: 28px;
-    padding: 18px 24px;
-    background: var(--dark);
-    color: rgba(255,255,255,0.8);
-    border-radius: 14px;
-    font-size: 0.9rem;
-  }
-  .template-modern .card-notes strong { color: var(--terracotta-light); }
-
-  /* ===== MINIMAL TEMPLATE ===== */
-  .template-minimal { border: 1px solid var(--cream-dark); }
-  .template-minimal .card-header {
-    padding: 48px 56px 12px;
-  }
-  .template-minimal .card-header h2 {
-    font-size: 2.6rem;
-    font-weight: 400;
-    font-family: 'Caveat', cursive;
-    color: var(--dark);
-  }
-  .template-minimal .card-header .desc {
-    color: var(--warm-gray);
-    font-size: 0.95rem;
-    font-weight: 400;
-  }
-  .template-minimal .card-meta {
-    display: flex;
-    gap: 24px;
-    padding: 16px 56px;
-    font-size: 0.8rem;
-    color: var(--warm-gray);
-    flex-wrap: wrap;
-  }
-  .template-minimal .meta-item strong {
-    color: var(--dark);
-    margin-right: 4px;
-  }
-  .template-minimal .card-body {
-    padding: 28px 56px 56px;
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 36px;
-  }
-  .template-minimal .section-title {
-    font-family: 'Caveat', cursive;
-    font-size: 1.5rem;
-    color: var(--sage);
-    margin-bottom: 14px;
-    font-weight: 500;
-  }
-  .template-minimal .ingredients-list { list-style: none; }
-  .template-minimal .ingredients-list li {
-    padding: 7px 0;
-    border-bottom: 1px dotted var(--cream-dark);
-    font-size: 0.9rem;
-  }
-  .template-minimal .instructions-list {
-    list-style: none;
-    counter-reset: step;
-  }
-  .template-minimal .instructions-list li {
-    padding: 10px 0;
-    font-size: 0.9rem;
-    counter-increment: step;
-    line-height: 1.7;
-  }
-  .template-minimal .instructions-list li::before {
-    content: counter(step) '.';
-    color: var(--sage);
-    font-weight: 600;
-    margin-right: 10px;
-  }
-  .template-minimal .card-notes {
-    grid-column: 1 / -1;
-    padding: 16px 0;
-    border-top: 1px solid var(--cream-dark);
-    font-size: 0.85rem;
-    color: var(--warm-gray);
-    font-style: italic;
-  }
-
-  /* ===== FARMHOUSE TEMPLATE ===== */
-  .template-farmhouse {
-    background: var(--parchment);
-    border: 2px solid var(--cream-dark);
-    position: relative;
-  }
-  .template-farmhouse::before {
-    content: '';
-    position: absolute;
-    inset: 6px;
-    border: 1px solid var(--sage-light);
-    border-radius: 18px;
-    pointer-events: none;
-    opacity: 0.4;
-  }
-  .template-farmhouse .card-header {
-    padding: 52px 56px 24px;
-    text-align: center;
-    position: relative;
-  }
-  .template-farmhouse .card-header::after {
-    content: '— ✿ —';
-    display: block;
-    margin-top: 16px;
-    color: var(--sage-light);
-    font-size: 1rem;
-    letter-spacing: 8px;
-  }
-  .template-farmhouse .card-header h2 {
-    font-family: 'Caveat', cursive;
-    font-size: 2.8rem;
-    font-weight: 700;
-    color: var(--dark);
-    line-height: 1.2;
-  }
-  .template-farmhouse .card-header .desc {
-    color: var(--warm-gray);
-    font-style: italic;
-    margin-top: 6px;
-    font-size: 1rem;
-  }
-  .template-farmhouse .card-meta {
-    display: flex;
-    justify-content: center;
-    gap: 32px;
-    padding: 18px 24px;
-    flex-wrap: wrap;
-  }
-  .template-farmhouse .meta-item {
-    text-align: center;
-    font-size: 0.85rem;
-    color: var(--warm-gray);
-    padding: 8px 20px;
-    background: rgba(255,255,255,0.6);
-    border-radius: 12px;
-    border: 1px solid var(--cream-dark);
-  }
-  .template-farmhouse .meta-item strong {
-    display: block;
-    font-size: 1.05rem;
-    color: var(--sage-dark);
-    font-family: 'Caveat', cursive;
-    font-size: 1.3rem;
-  }
-  .template-farmhouse .card-body { padding: 36px 56px 60px; }
-  .template-farmhouse .section-title {
-    font-family: 'Caveat', cursive;
-    font-size: 1.6rem;
-    color: var(--sage-dark);
-    margin-bottom: 14px;
-    text-align: center;
-    position: relative;
-  }
-  .template-farmhouse .section-title::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 2px;
-    background: var(--sage-light);
-    margin: 8px auto 0;
-  }
-  .template-farmhouse .ingredients-list {
-    list-style: none;
-    columns: 2;
-    column-gap: 32px;
-    margin-bottom: 40px;
-    padding: 24px 28px;
-    background: rgba(255,255,255,0.5);
-    border-radius: 16px;
-    border: 1px dashed var(--sage-light);
-  }
-  .template-farmhouse .ingredients-list li {
-    padding: 5px 0 5px 22px;
-    position: relative;
-    break-inside: avoid;
-    font-size: 0.95rem;
-  }
-  .template-farmhouse .ingredients-list li::before {
-    content: '◆';
-    position: absolute;
-    left: 0;
-    color: var(--sage-light);
-    font-size: 0.55rem;
-    top: 11px;
-  }
-  .template-farmhouse .instructions-list {
-    list-style: none;
-    counter-reset: step;
-  }
-  .template-farmhouse .instructions-list li {
-    padding: 14px 0 14px 48px;
-    position: relative;
-    font-size: 0.95rem;
-    counter-increment: step;
-    line-height: 1.8;
-    border-bottom: 1px dashed var(--cream-dark);
-  }
-  .template-farmhouse .instructions-list li:last-child { border-bottom: none; }
-  .template-farmhouse .instructions-list li::before {
-    content: counter(step);
-    position: absolute;
-    left: 0;
-    top: 12px;
-    width: 32px;
-    height: 32px;
-    border: 2px solid var(--sage-light);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Caveat', cursive;
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--sage-dark);
-  }
-  .template-farmhouse .card-notes {
-    margin-top: 28px;
-    padding: 20px 24px;
-    background: rgba(255,255,255,0.5);
-    border: 1px solid var(--cream-dark);
-    border-radius: 14px;
-    font-size: 0.9rem;
-    color: var(--dark-soft);
-    font-style: italic;
-    text-align: center;
-  }
-  .template-farmhouse .card-notes strong {
-    color: var(--sage-dark);
-    font-style: normal;
-    font-family: 'Caveat', cursive;
-    font-size: 1.1rem;
+    margin: 28px 0 60px;
   }
 
   /* ===== FOOTER ===== */
-  footer {
-    text-align: center;
-    padding: 40px 0 32px;
-  }
-  .footer-svg { width: 300px; height: 30px; color: var(--sage); }
-  .footer-text {
-    margin-top: 12px;
-    font-size: 0.85rem;
-    color: var(--warm-gray);
-    font-style: italic;
-  }
+  footer { text-align: center; padding: 40px 0 28px; }
+  .footer-ornament { color: var(--sage-light); font-size: 1.2rem; margin-bottom: 8px; }
+  .footer-text { font-size: 0.85rem; color: var(--warm-gray); font-style: italic; }
 
   /* ===== MODAL ===== */
   .modal {
@@ -890,8 +363,8 @@ import Layout from '../layouts/Layout.astro';
   }
   .modal-content {
     background: var(--warm-white);
-    border-radius: 24px;
-    padding: 36px;
+    border-radius: 20px;
+    padding: 32px;
     max-width: 600px;
     width: 90%;
     position: relative;
@@ -899,39 +372,628 @@ import Layout from '../layouts/Layout.astro';
     overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0,0,0,0.15);
   }
-  .modal-close { position: absolute; top: 16px; right: 16px; }
+  .modal-close { position: absolute; top: 14px; right: 14px; }
   .modal-content h3 { margin-bottom: 8px; }
   .modal-content textarea {
     width: 100%;
     font-family: monospace;
     font-size: 0.8rem;
     border: 1px solid var(--cream-dark);
-    border-radius: 12px;
-    padding: 14px;
+    border-radius: 10px;
+    padding: 12px;
     resize: vertical;
     margin-top: 12px;
     background: white;
   }
 
-  /* ===== RESPONSIVE ===== */
   @media (max-width: 640px) {
     .logo h1 { font-size: 2.2rem; }
-    .drop-zone { padding: 48px 20px; }
-    .template-classic .ingredients-list,
-    .template-modern .ingredients-list,
-    .template-farmhouse .ingredients-list { columns: 1; grid-template-columns: 1fr; }
-    .template-classic .card-body,
-    .template-modern .card-body,
-    .template-farmhouse .card-body { padding: 24px 24px 36px; }
-    .template-classic .card-header,
-    .template-modern .card-header,
-    .template-farmhouse .card-header { padding: 32px 24px 24px; }
-    .template-minimal .card-body { grid-template-columns: 1fr; }
-    .template-minimal .card-header { padding: 28px 24px 8px; }
-    .template-minimal .card-meta { padding: 14px 24px; }
-    .card-controls { justify-content: center; text-align: center; }
-    .controls-header { width: 100%; justify-content: center; }
-    .template-picker { justify-content: center; }
+    .drop-zone { padding: 44px 20px; }
+    .pickers-row { gap: 16px; }
+    .card-controls { text-align: center; }
+  }
+</style>
+
+<!-- Card styles must be global because HTML is injected via JS -->
+<style is:global>
+  /* ===== SIZE SYSTEM ===== */
+  .recipe-card {
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  .size-3x5 { width: 5in; min-height: 3in; }
+  .size-4x6 { width: 6in; min-height: 4in; }
+  .size-5x7 { width: 7in; min-height: 5in; }
+  .size-full { width: 100%; max-width: 800px; }
+
+  /* ===== GRANDMA'S TEMPLATE ===== */
+  .template-grandma {
+    background: #FDF6E3;
+    border-radius: 6px;
+    box-shadow:
+      0 2px 8px rgba(120,100,60,0.12),
+      0 12px 40px rgba(120,100,60,0.08),
+      inset 0 0 80px rgba(180,160,100,0.06);
+    border: 1px solid #E8DCBE;
+    font-family: 'Caveat', cursive;
+  }
+  .template-grandma::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 27px,
+        rgba(140,180,220,0.15) 27px,
+        rgba(140,180,220,0.15) 28px
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+  .template-grandma::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 56px;
+    bottom: 0;
+    width: 1.5px;
+    background: rgba(220,120,120,0.25);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .template-grandma .card-header {
+    padding: 28px 40px 16px 72px;
+    position: relative;
+    z-index: 1;
+    border-bottom: none;
+  }
+  .template-grandma .card-header h2 {
+    font-family: 'Caveat', cursive;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #4A3728;
+    line-height: 1.2;
+  }
+  .template-grandma .card-header .desc {
+    color: #8B7355;
+    font-size: 1.2rem;
+    margin-top: 2px;
+  }
+  .template-grandma .card-meta {
+    display: flex;
+    gap: 24px;
+    padding: 8px 40px 12px 72px;
+    position: relative;
+    z-index: 1;
+    flex-wrap: wrap;
+  }
+  .template-grandma .meta-item {
+    font-size: 1.1rem;
+    color: #8B7355;
+  }
+  .template-grandma .meta-item strong {
+    color: #4A3728;
+    margin-right: 2px;
+  }
+  .template-grandma .card-body {
+    padding: 12px 40px 36px 72px;
+    position: relative;
+    z-index: 1;
+  }
+  .template-grandma .section-title {
+    font-family: 'Caveat', cursive;
+    font-size: 1.6rem;
+    color: #4A3728;
+    margin-bottom: 8px;
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: rgba(220,120,120,0.3);
+    text-underline-offset: 4px;
+  }
+  .template-grandma .ingredients-list {
+    list-style: none;
+    margin-bottom: 20px;
+  }
+  .template-grandma .ingredients-list li {
+    padding: 2px 0;
+    font-size: 1.2rem;
+    color: #4A3728;
+    line-height: 1.5;
+  }
+  .template-grandma .ingredients-list li::before {
+    content: '- ';
+    color: #8B7355;
+  }
+  .template-grandma .instructions-list {
+    list-style: none;
+    counter-reset: step;
+  }
+  .template-grandma .instructions-list li {
+    padding: 3px 0;
+    font-size: 1.15rem;
+    color: #4A3728;
+    counter-increment: step;
+    line-height: 1.5;
+  }
+  .template-grandma .instructions-list li::before {
+    content: counter(step) '. ';
+    color: #8B7355;
+    font-weight: 700;
+  }
+  .template-grandma .card-notes {
+    margin-top: 16px;
+    padding: 10px 14px;
+    font-size: 1.1rem;
+    color: #8B7355;
+    font-style: italic;
+    border-top: 1px dashed rgba(180,160,100,0.4);
+  }
+  .template-grandma .card-notes strong {
+    color: #4A3728;
+    font-style: normal;
+  }
+
+  /* ===== VINTAGE TEMPLATE ===== */
+  .template-vintage {
+    background: #FAF4EA;
+    border-radius: 4px;
+    border: 3px double #C8B896;
+    box-shadow: 0 6px 32px rgba(100,80,50,0.1);
+    position: relative;
+    font-family: 'Lora', serif;
+  }
+  .template-vintage::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid #D8CAA8;
+    border-radius: 2px;
+    pointer-events: none;
+  }
+  .template-vintage .card-header {
+    padding: 40px 48px 20px;
+    text-align: center;
+    position: relative;
+  }
+  .template-vintage .card-header::after {
+    content: '❦';
+    display: block;
+    font-size: 1.4rem;
+    color: #C8B896;
+    margin-top: 12px;
+  }
+  .template-vintage .card-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #3C2F1E;
+    font-style: italic;
+  }
+  .template-vintage .card-header .desc {
+    color: #8B7D68;
+    font-style: italic;
+    font-size: 0.95rem;
+    margin-top: 4px;
+  }
+  .template-vintage .card-meta {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 48px;
+    flex-wrap: wrap;
+  }
+  .template-vintage .meta-item {
+    font-size: 0.85rem;
+    color: #8B7D68;
+    padding: 6px 16px;
+    border: 1px solid #D8CAA8;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.4);
+  }
+  .template-vintage .meta-item strong {
+    display: block;
+    color: #3C2F1E;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+  }
+  .template-vintage .card-body {
+    padding: 24px 48px 44px;
+  }
+  .template-vintage .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: #3C2F1E;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    text-align: center;
+    position: relative;
+  }
+  .template-vintage .section-title::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 1px;
+    background: #C8B896;
+    margin: 8px auto 0;
+  }
+  .template-vintage .ingredients-list {
+    list-style: none;
+    columns: 2;
+    column-gap: 24px;
+    margin-bottom: 28px;
+  }
+  .template-vintage .ingredients-list li {
+    padding: 5px 0 5px 18px;
+    position: relative;
+    break-inside: avoid;
+    font-size: 0.92rem;
+    color: #4A3D2E;
+  }
+  .template-vintage .ingredients-list li::before {
+    content: '◇';
+    position: absolute;
+    left: 0;
+    color: #C8B896;
+    font-size: 0.6rem;
+    top: 9px;
+  }
+  .template-vintage .instructions-list {
+    list-style: none;
+    counter-reset: step;
+  }
+  .template-vintage .instructions-list li {
+    padding: 10px 0 10px 40px;
+    position: relative;
+    font-size: 0.92rem;
+    counter-increment: step;
+    color: #4A3D2E;
+    border-bottom: 1px dotted #D8CAA8;
+    line-height: 1.7;
+  }
+  .template-vintage .instructions-list li:last-child { border-bottom: none; }
+  .template-vintage .instructions-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 28px;
+    height: 28px;
+    border: 1.5px solid #C8B896;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #3C2F1E;
+    font-family: 'Playfair Display', serif;
+  }
+  .template-vintage .card-notes {
+    margin-top: 24px;
+    padding: 16px 20px;
+    border: 1px solid #D8CAA8;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.3);
+    font-size: 0.88rem;
+    color: #8B7D68;
+    font-style: italic;
+    text-align: center;
+  }
+  .template-vintage .card-notes strong { color: #3C2F1E; font-style: normal; }
+
+  /* ===== FARMHOUSE TEMPLATE ===== */
+  .template-farmhouse {
+    background: #F5EEE4;
+    border-radius: 16px;
+    border: 2px solid #DDD2BE;
+    box-shadow: 0 8px 36px rgba(80,60,40,0.1);
+    position: relative;
+    font-family: 'Lora', serif;
+  }
+  .template-farmhouse::before {
+    content: '';
+    position: absolute;
+    inset: 7px;
+    border: 1px solid rgba(180,165,130,0.3);
+    border-radius: 10px;
+    pointer-events: none;
+  }
+  .template-farmhouse .card-header {
+    padding: 44px 48px 16px;
+    text-align: center;
+  }
+  .template-farmhouse .card-header::after {
+    content: '— 🌿 —';
+    display: block;
+    margin-top: 14px;
+    color: #B5A882;
+    font-size: 0.9rem;
+    letter-spacing: 6px;
+  }
+  .template-farmhouse .card-header h2 {
+    font-family: 'Caveat', cursive;
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: #3C352C;
+  }
+  .template-farmhouse .card-header .desc {
+    color: #8A7F74;
+    font-style: italic;
+    font-size: 0.95rem;
+    margin-top: 4px;
+  }
+  .template-farmhouse .card-meta {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    padding: 16px 32px;
+    flex-wrap: wrap;
+  }
+  .template-farmhouse .meta-item {
+    text-align: center;
+    font-size: 0.82rem;
+    color: #8A7F74;
+    padding: 8px 18px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 10px;
+    border: 1px solid #DDD2BE;
+  }
+  .template-farmhouse .meta-item strong {
+    display: block;
+    font-family: 'Caveat', cursive;
+    font-size: 1.3rem;
+    color: #5C6B52;
+  }
+  .template-farmhouse .card-body { padding: 24px 48px 48px; }
+  .template-farmhouse .section-title {
+    font-family: 'Caveat', cursive;
+    font-size: 1.6rem;
+    color: #5C6B52;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .template-farmhouse .section-title::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 2px;
+    background: #B5C4A8;
+    margin: 6px auto 0;
+  }
+  .template-farmhouse .ingredients-list {
+    list-style: none;
+    columns: 2;
+    column-gap: 28px;
+    margin-bottom: 32px;
+    padding: 20px 24px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 12px;
+    border: 1px dashed #B5C4A8;
+  }
+  .template-farmhouse .ingredients-list li {
+    padding: 4px 0 4px 20px;
+    position: relative;
+    break-inside: avoid;
+    font-size: 0.92rem;
+  }
+  .template-farmhouse .ingredients-list li::before {
+    content: '◆';
+    position: absolute;
+    left: 0;
+    color: #B5C4A8;
+    font-size: 0.5rem;
+    top: 10px;
+  }
+  .template-farmhouse .instructions-list {
+    list-style: none;
+    counter-reset: step;
+  }
+  .template-farmhouse .instructions-list li {
+    padding: 12px 0 12px 44px;
+    position: relative;
+    font-size: 0.92rem;
+    counter-increment: step;
+    line-height: 1.7;
+    border-bottom: 1px dashed #DDD2BE;
+  }
+  .template-farmhouse .instructions-list li:last-child { border-bottom: none; }
+  .template-farmhouse .instructions-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #B5C4A8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Caveat', cursive;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #5C6B52;
+  }
+  .template-farmhouse .card-notes {
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.4);
+    border: 1px solid #DDD2BE;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    color: #8A7F74;
+    font-style: italic;
+    text-align: center;
+  }
+  .template-farmhouse .card-notes strong { color: #5C6B52; font-style: normal; }
+
+  /* ===== HEIRLOOM TEMPLATE ===== */
+  .template-heirloom {
+    background: #FFFDF7;
+    border-radius: 0;
+    border: none;
+    box-shadow: 0 4px 24px rgba(80,60,40,0.08);
+    position: relative;
+    font-family: 'Playfair Display', serif;
+  }
+  .template-heirloom::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 12px solid transparent;
+    border-image: repeating-linear-gradient(
+      45deg,
+      #D4C5A0 0px, #D4C5A0 2px,
+      transparent 2px, transparent 8px
+    ) 12;
+    pointer-events: none;
+  }
+  .template-heirloom .card-header {
+    padding: 48px 56px 20px;
+    text-align: center;
+    position: relative;
+  }
+  .template-heirloom .card-header::before {
+    content: '✦ ✦ ✦';
+    display: block;
+    color: #C8B280;
+    font-size: 0.7rem;
+    letter-spacing: 8px;
+    margin-bottom: 16px;
+  }
+  .template-heirloom .card-header::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #C8B280, transparent);
+    margin: 16px auto 0;
+  }
+  .template-heirloom .card-header h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2C2418;
+    letter-spacing: 1px;
+  }
+  .template-heirloom .card-header .desc {
+    color: #8B7D68;
+    font-style: italic;
+    font-size: 1rem;
+    margin-top: 6px;
+    font-weight: 400;
+  }
+  .template-heirloom .card-meta {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    padding: 16px 56px;
+    flex-wrap: wrap;
+  }
+  .template-heirloom .meta-item {
+    text-align: center;
+    font-size: 0.82rem;
+    color: #8B7D68;
+    font-family: 'Lora', serif;
+  }
+  .template-heirloom .meta-item strong {
+    display: block;
+    font-size: 1.15rem;
+    color: #2C2418;
+    font-family: 'Playfair Display', serif;
+  }
+  .template-heirloom .card-body {
+    padding: 24px 56px 56px;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 32px;
+  }
+  .template-heirloom .section-title {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #C8B280;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  .template-heirloom .ingredients-list {
+    list-style: none;
+    border-right: 1px solid #E8DCC8;
+    padding-right: 24px;
+  }
+  .template-heirloom .ingredients-list li {
+    padding: 6px 0;
+    font-size: 0.9rem;
+    color: #3C2F1E;
+    font-family: 'Lora', serif;
+    border-bottom: 1px dotted #E8DCC8;
+  }
+  .template-heirloom .ingredients-list li:last-child { border-bottom: none; }
+  .template-heirloom .instructions-list {
+    list-style: none;
+    counter-reset: step;
+  }
+  .template-heirloom .instructions-list li {
+    padding: 8px 0;
+    font-size: 0.9rem;
+    color: #3C2F1E;
+    counter-increment: step;
+    font-family: 'Lora', serif;
+    line-height: 1.7;
+  }
+  .template-heirloom .instructions-list li::before {
+    content: counter(step) '.';
+    color: #C8B280;
+    font-weight: 700;
+    margin-right: 8px;
+    font-family: 'Playfair Display', serif;
+  }
+  .template-heirloom .card-notes {
+    grid-column: 1 / -1;
+    padding: 16px 0;
+    border-top: 1px solid #E8DCC8;
+    font-size: 0.85rem;
+    color: #8B7D68;
+    font-style: italic;
+    text-align: center;
+    font-family: 'Lora', serif;
+  }
+  .template-heirloom .card-notes strong { color: #2C2418; font-style: normal; }
+
+  /* ===== RESPONSIVE CARD OVERRIDES ===== */
+  @media (max-width: 640px) {
+    .size-3x5, .size-4x6, .size-5x7, .size-full {
+      width: 100% !important;
+      min-height: auto !important;
+    }
+    .template-grandma .card-header,
+    .template-grandma .card-body,
+    .template-grandma .card-meta { padding-left: 48px; padding-right: 24px; }
+    .template-grandma::after { left: 36px; }
+    .template-vintage .card-header,
+    .template-vintage .card-body { padding-left: 28px; padding-right: 28px; }
+    .template-vintage .ingredients-list { columns: 1; }
+    .template-farmhouse .card-header,
+    .template-farmhouse .card-body { padding-left: 24px; padding-right: 24px; }
+    .template-farmhouse .ingredients-list { columns: 1; }
+    .template-heirloom .card-header,
+    .template-heirloom .card-meta { padding-left: 28px; padding-right: 28px; }
+    .template-heirloom .card-body {
+      padding: 20px 28px 36px;
+      grid-template-columns: 1fr;
+    }
+    .template-heirloom .ingredients-list { border-right: none; padding-right: 0; border-bottom: 1px solid #E8DCC8; padding-bottom: 16px; }
+  }
+
+  @media print {
+    .recipe-card { box-shadow: none !important; }
+    .size-3x5 { width: 5in; height: 3in; }
+    .size-4x6 { width: 6in; height: 4in; }
+    .size-5x7 { width: 7in; height: 5in; }
   }
 </style>
 
@@ -942,15 +1004,15 @@ import Layout from '../layouts/Layout.astro';
   const previewContainer = $('#preview-container');
   const previewImage = $('#preview-image');
   const extractBtn = $('#extract-btn');
-  const uploadSection = $('#upload-section');
   const cardSection = $('#card-section');
   const recipeCard = $('#recipe-card');
   const errorMsg = $('#error-msg');
   let base64Image = '';
   let currentRecipe = null;
-  let currentTemplate = 'classic';
+  let currentTemplate = 'grandma';
+  let currentSize = '5x7';
 
-  // --- Upload handling ---
+  // Upload
   dropZone.addEventListener('click', () => fileInput.click());
   dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
   dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
@@ -985,7 +1047,7 @@ import Layout from '../layouts/Layout.astro';
     fileInput.value = '';
   });
 
-  // --- Extract ---
+  // Extract
   extractBtn.addEventListener('click', async () => {
     if (!base64Image) return;
     extractBtn.disabled = true;
@@ -1013,7 +1075,7 @@ import Layout from '../layouts/Layout.astro';
     }
   });
 
-  // --- Render card ---
+  // Render
   function renderCard() {
     if (!currentRecipe) return;
     const r = currentRecipe;
@@ -1022,7 +1084,7 @@ import Layout from '../layouts/Layout.astro';
     const notesHtml = r.notes ? `<div class="card-notes"><strong>Notes: </strong>${r.notes}</div>` : '';
 
     let bodyContent;
-    if (currentTemplate === 'minimal') {
+    if (currentTemplate === 'heirloom') {
       bodyContent = `
         <div><h3 class="section-title">Ingredients</h3><ul class="ingredients-list">${ingredientsHtml}</ul></div>
         <div><h3 class="section-title">Instructions</h3><ol class="instructions-list">${instructionsHtml}</ol></div>
@@ -1036,7 +1098,7 @@ import Layout from '../layouts/Layout.astro';
         ${notesHtml}`;
     }
 
-    recipeCard.className = `recipe-card template-${currentTemplate} fade-up`;
+    recipeCard.className = `recipe-card template-${currentTemplate} size-${currentSize} fade-up`;
     recipeCard.innerHTML = `
       <div class="card-header">
         <h2>${r.title || 'Untitled Recipe'}</h2>
@@ -1051,7 +1113,7 @@ import Layout from '../layouts/Layout.astro';
     `;
   }
 
-  // --- Template switching ---
+  // Template switching
   document.querySelectorAll('.tmpl-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.tmpl-btn').forEach(b => b.classList.remove('active'));
@@ -1061,22 +1123,34 @@ import Layout from '../layouts/Layout.astro';
     });
   });
 
-  // --- Actions ---
+  // Size switching
+  document.querySelectorAll('.size-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentSize = btn.dataset.size;
+      renderCard();
+    });
+  });
+
+  // Actions
   $('#print-btn').addEventListener('click', () => window.print());
 
   $('#download-btn').addEventListener('click', async () => {
     const { default: html2canvas } = await import('html2canvas');
-    const canvas = await html2canvas(recipeCard, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+    // Scale based on size for print quality
+    const scales = { '3x5': 3, '4x6': 3, '5x7': 2.5, 'full': 2 };
+    const scale = scales[currentSize] || 2;
+    const canvas = await html2canvas(recipeCard, { scale, useCORS: true, backgroundColor: null });
     const a = document.createElement('a');
-    a.download = `${(currentRecipe?.title || 'recipe').replace(/\s+/g, '-').toLowerCase()}-card.png`;
+    a.download = `${(currentRecipe?.title || 'recipe').replace(/\s+/g, '-').toLowerCase()}-${currentSize}.png`;
     a.href = canvas.toDataURL('image/png');
     a.click();
   });
 
   $('#email-btn').addEventListener('click', () => {
     if (!currentRecipe) return;
-    const r = currentRecipe;
-    const html = generateEmailHtml(r);
+    const html = generateEmailHtml(currentRecipe);
     $('#email-html').value = html;
     $('#email-modal').style.display = 'flex';
   });
@@ -1105,26 +1179,19 @@ import Layout from '../layouts/Layout.astro';
   function generateEmailHtml(r) {
     const ingredients = (r.ingredients || []).map(i => `<li style="padding:4px 0;">${i}</li>`).join('');
     const instructions = (r.instructions || []).map((s, i) => `<li style="padding:6px 0;"><strong>${i + 1}.</strong> ${s}</li>`).join('');
-    return `<div style="max-width:600px;margin:0 auto;font-family:Georgia,serif;color:#3C352C;">
-  <div style="background:#7A8B6F;color:white;padding:32px 28px;text-align:center;border-radius:16px 16px 0 0;">
-    <h1 style="margin:0;font-size:26px;font-family:Georgia,serif;">${r.title || 'Recipe'}</h1>
-    ${r.description ? `<p style="margin:8px 0 0;opacity:0.85;font-style:italic;">${r.description}</p>` : ''}
+    return `<div style="max-width:600px;margin:0 auto;font-family:Georgia,serif;color:#3C352C;background:#FDF6E3;padding:32px;border:2px solid #D8CAA8;border-radius:4px;">
+  <h1 style="text-align:center;font-size:28px;margin:0 0 4px;font-family:'Georgia',serif;color:#4A3728;">${r.title || 'Recipe'}</h1>
+  ${r.description ? `<p style="text-align:center;color:#8B7355;font-style:italic;margin:4px 0 16px;">${r.description}</p>` : '<div style="margin-bottom:16px;"></div>'}
+  <div style="text-align:center;font-size:14px;color:#8B7355;padding:10px 0;border-top:1px dashed #D8CAA8;border-bottom:1px dashed #D8CAA8;margin-bottom:20px;">
+    ⏱ Prep: <strong style="color:#4A3728;">${r.prepTime || '—'}</strong> &nbsp;·&nbsp;
+    🔥 Cook: <strong style="color:#4A3728;">${r.cookTime || '—'}</strong> &nbsp;·&nbsp;
+    🍽 Serves: <strong style="color:#4A3728;">${r.servings || '—'}</strong>
   </div>
-  <div style="background:#F8F2E8;padding:14px 28px;text-align:center;font-size:14px;border-bottom:1px solid #E8DFD1;">
-    <span>⏱ Prep: <strong>${r.prepTime || '—'}</strong></span> &nbsp;·&nbsp;
-    <span>🔥 Cook: <strong>${r.cookTime || '—'}</strong></span> &nbsp;·&nbsp;
-    <span>🍽 Serves: <strong>${r.servings || '—'}</strong></span>
-  </div>
-  <div style="background:white;padding:28px;border:1px solid #E8DFD1;">
-    <h2 style="color:#5C6B52;font-size:18px;border-bottom:2px solid #D4DEC9;padding-bottom:8px;font-family:Georgia,serif;">Ingredients</h2>
-    <ul style="list-style:disc;padding-left:20px;margin-top:12px;">${ingredients}</ul>
-    <h2 style="color:#5C6B52;font-size:18px;border-bottom:2px solid #D4DEC9;padding-bottom:8px;margin-top:24px;font-family:Georgia,serif;">Instructions</h2>
-    <ol style="list-style:none;padding:0;margin-top:12px;">${instructions}</ol>
-    ${r.notes ? `<div style="margin-top:20px;padding:14px 18px;background:#FFF8F0;border-left:3px solid #DDA88E;font-size:14px;border-radius:0 8px 8px 0;font-style:italic;"><strong style="font-style:normal;">Notes:</strong> ${r.notes}</div>` : ''}
-  </div>
-  <div style="text-align:center;padding:18px;font-size:12px;color:#8A7F74;border-radius:0 0 16px 16px;background:#F8F2E8;">
-    Made with ✨ Recipe Cards
-  </div>
+  <h2 style="font-size:18px;color:#4A3728;text-decoration:underline;text-decoration-color:#D8CAA8;text-underline-offset:4px;">Ingredients</h2>
+  <ul style="list-style:none;padding:0;margin:8px 0 20px;">${(r.ingredients||[]).map(i=>`<li style="padding:3px 0;color:#4A3728;">- ${i}</li>`).join('')}</ul>
+  <h2 style="font-size:18px;color:#4A3728;text-decoration:underline;text-decoration-color:#D8CAA8;text-underline-offset:4px;">Instructions</h2>
+  <ol style="list-style:none;padding:0;margin:8px 0 0;">${instructions}</ol>
+  ${r.notes ? `<div style="margin-top:20px;padding:12px;border-top:1px dashed #D8CAA8;font-size:14px;color:#8B7355;font-style:italic;"><strong style="font-style:normal;color:#4A3728;">Notes:</strong> ${r.notes}</div>` : ''}
 </div>`;
   }
 
